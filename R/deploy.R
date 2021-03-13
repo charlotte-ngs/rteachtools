@@ -65,7 +65,7 @@ deploy_ex <- function(ps_ex_path,
     rtt_log_info(plogger = rtt_logger,
                  ps_caller = 'deploy_ex',
                  ps_msg = paste0(" * Rendering ex source to: ", s_ex_out_path, collapse = ''))
-  rmarkdown::render(input = ps_ex_path, output_file = s_ex_out_path, params = list(doctype = 'exercise'))
+  rmarkdown::render(input = s_ex_path, output_file = s_ex_out_path, params = list(doctype = 'exercise'))
 
   # render source file to solution document
   if (!dir.exists(ps_sol_out_dir)){
@@ -77,12 +77,12 @@ deploy_ex <- function(ps_ex_path,
   if (pb_debug)
     rtt_log_info(plogger = rtt_logger, ps_caller = 'deploy_ex', ps_msg = s_log_msg)
   # path to solution and render
-  s_sol_out_path <- file.path(ps_sol_out_dir, paste(tools::file_path_sans_ext(basename(ps_ex_path)), '_sol.pdf', sep = ''))
+  s_sol_out_path <- file.path(ps_sol_out_dir, paste(tools::file_path_sans_ext(basename(s_ex_path)), '_sol.pdf', sep = ''))
   if (pb_debug)
     rtt_log_info(plogger = rtt_logger,
                  ps_caller = 'deploy_ex',
                  ps_msg = paste0(" * Rendering ex source to: ", s_sol_out_path, collapse = ''))
-  rmarkdown::render(input = ps_ex_path, output_file = s_sol_out_path, params = list(doctype = 'solution'))
+  rmarkdown::render(input = s_ex_path, output_file = s_sol_out_path, params = list(doctype = 'solution'))
 
   return(invisible(TRUE))
 }
