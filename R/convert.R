@@ -21,6 +21,7 @@
 #' @param ps_ex_path path to the Rmarkdown source file
 #' @param ps_nb_out_dir output directory for Rmd notebook
 #' @param ps_nb_deploy_dir deployment directory of rendered nb
+#' @param pn_comment_line_offset number of lines taken by R-code junk to produce md-comment
 #' @param pb_force force output even if output file already exists
 #' @param pb_debug debugging flag
 #' @param pobj_rtt_logger log4r logger object
@@ -29,6 +30,7 @@
 convert_ex_to_nb <- function(ps_ex_path,
                              ps_nb_out_dir,
                              ps_nb_deploy_dir,
+                             pn_comment_line_offset = 2,
                              pb_force        = FALSE,
                              pb_debug        = FALSE,
                              pobj_rtt_logger = NULL){
@@ -89,13 +91,13 @@ convert_ex_to_nb <- function(ps_ex_path,
     if (length(vec_comment_start) > 1){
       for (idx in 2:length(vec_comment_start)){
         vec_nb_src <- c(vec_nb_src,
-                        vec_ex_src[(vec_comment_end[idx-1]+4):(vec_comment_start[idx]-1)])
+                        vec_ex_src[(vec_comment_end[idx-1]+pn_comment_line_offset):(vec_comment_start[idx]-1)])
       }
     }
 
     #  add all lines below latest solution section
-    if (length(vec_ex_src) > (vec_comment_end[length(vec_comment_end)]+4))
-      vec_nb_src <- c(vec_nb_src, vec_ex_src[ (vec_comment_end[length(vec_comment_end)]+4):length(vec_ex_src) ])
+    if (length(vec_ex_src) > (vec_comment_end[length(vec_comment_end)]+pn_comment_line_offset))
+      vec_nb_src <- c(vec_nb_src, vec_ex_src[ (vec_comment_end[length(vec_comment_end)]+pn_comment_line_offset):length(vec_ex_src) ])
 
     # check whether ps_nb_out_dir exists, if not create it
     if (!dir.exists(ps_nb_out_dir)){

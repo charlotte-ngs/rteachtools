@@ -8,6 +8,7 @@ convert_ex_to_nb(
   ps_ex_path,
   ps_nb_out_dir,
   ps_nb_deploy_dir,
+  pn_comment_line_offset = 2,
   pb_force = FALSE,
   pb_debug = FALSE,
   pobj_rtt_logger = NULL
@@ -19,6 +20,8 @@ convert_ex_to_nb(
 \item{ps_nb_out_dir}{output directory for Rmd notebook}
 
 \item{ps_nb_deploy_dir}{deployment directory of rendered nb}
+
+\item{pn_comment_line_offset}{number of lines taken by R-code junk to produce md-comment}
 
 \item{pb_force}{force output even if output file already exists}
 

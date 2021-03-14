@@ -1,0 +1,29 @@
+---
+title: "Create Exercise Notebooks"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Create Exercise Notebooks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(rteachtools)
+```
+
+## Disclaimer
+
+
+## Creation
+Based on a RMarkdown source file with a few added tags, notebooks for the students to work on are produced automatically using the function `convert_ex_to_nb()`.
+
+
+## TODO
+Include the feature to activate the parts describing to proposed solutions to students. 
