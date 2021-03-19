@@ -30,10 +30,11 @@
 convert_ex_to_nb <- function(ps_ex_path,
                              ps_nb_out_dir,
                              ps_nb_deploy_dir,
-                             pn_comment_line_offset = 2,
-                             pb_force        = FALSE,
-                             pb_debug        = FALSE,
-                             pobj_rtt_logger = NULL){
+                             pvec_subdir_nb         = c('odg'),
+                             pn_comment_line_offset = 3,
+                             pb_force               = FALSE,
+                             pb_debug               = FALSE,
+                             pobj_rtt_logger        = NULL){
   # init logging for this function
   if (pb_debug){
     if (is.null(pobj_rtt_logger)){
@@ -107,8 +108,27 @@ convert_ex_to_nb <- function(ps_ex_path,
                      ps_msg = paste0(' * Cannot find nb_outdir: ', ps_nb_out_dir, ' ==> create it', collapse = ''))
       dir.create(ps_nb_out_dir, recursive = TRUE)
     }
+
+    # filter out the lines containing your-solution-start and your-solution-end
+    vec_ys_start <- grep(pattern = 'your-solution-start', vec_nb_src)
+    vec_ys_end <- grep(pattern = 'your-solution-end', vec_nb_src)
+    vec_nb_src <- vec_nb_src[-c(vec_ys_start, vec_ys_end)]
+
     # write modified exercise to nb out path
     cat(paste0(vec_nb_src, collapse = '\n'), '\n', file = s_nb_out_path)
+
+    # check whether we have to copy a subdirectory needed for nb
+    for (didx in seq_along(pvec_subdir_nb)){
+      cur_dir <- pvec_subdir_nb[didx]
+      cur_path <- file.path(dirname(s_ex_path), cur_dir)
+      if (dir.exists(cur_path)){
+        new_path <- file.path(ps_nb_out_dir, cur_dir)
+        if (dir.exists(new_path) && pb_force)
+          fs::dir_delete(path = new_path)
+        fs::dir_copy(path = cur_path, new_path = ps_nb_out_dir)
+      }
+    }
+
   }
   # render to deployment directory
   if (!dir.exists(ps_nb_deploy_dir)) dir.create(ps_nb_deploy_dir)

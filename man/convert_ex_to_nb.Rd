@@ -8,7 +8,8 @@ convert_ex_to_nb(
   ps_ex_path,
   ps_nb_out_dir,
   ps_nb_deploy_dir,
-  pn_comment_line_offset = 2,
+  pvec_subdir_nb = c("odg"),
+  pn_comment_line_offset = 3,
   pb_force = FALSE,
   pb_debug = FALSE,
   pobj_rtt_logger = NULL
