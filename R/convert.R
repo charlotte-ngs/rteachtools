@@ -117,6 +117,10 @@ convert_ex_to_nb <- function(ps_ex_path,
     # write modified exercise to nb out path
     cat(paste0(vec_nb_src, collapse = '\n'), '\n', file = s_nb_out_path)
 
+    # write latest change at the end of the nb
+    cat("\n\n```{r, echo=FALSE, results='asis'}\ncat('\\n---\\n\\n _Latest Changes: ', format(Sys.time(), '%Y-%m-%d %H:%M:%S'), ' (', Sys.info()['user'], ')_\\n', sep = '')\n```\n",
+        sep = '', file = s_nb_out_path, append = TRUE)
+
     # check whether we have to copy a subdirectory needed for nb
     for (didx in seq_along(pvec_subdir_nb)){
       cur_dir <- pvec_subdir_nb[didx]

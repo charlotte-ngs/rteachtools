@@ -27,3 +27,6 @@ Based on a RMarkdown source file with a few added tags, notebooks for the studen
 
 ## TODO
 Include the feature to activate the parts describing to proposed solutions to students. 
+
+
+
