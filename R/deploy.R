@@ -52,6 +52,8 @@ deploy_ex <- function(ps_ex_path,
                  ps_msg = paste0(" * Setting source path to: ", s_ex_path, collapse = ''))
   if (!file.exists(s_ex_path))
     stop(" *** [deploy_ex] ERROR: CANNOT FIND exercise source path: ", s_ex_path)
+  # assign directory of s_ex_path, for deployment of solution to rexpf
+  s_ex_dir <- dirname(s_ex_path)
 
   # determine path for output files
   if (!dir.exists(ps_ex_out_dir)){
@@ -96,7 +98,10 @@ deploy_ex <- function(ps_ex_path,
                    ps_caller = 'deploy_ex',
                    ps_msg = paste0(" * Deploy ex from source: ", ps_rexpf_src,
                                    " to rexpf target: ", ps_rexpf_trg, collapse = ''))
+    # deploy exercise nb
     fs::dir_copy(path = file.path(ps_rexpf_src, s_ex_name), new_path = file.path(ps_rexpf_trg, 'ex', s_ex_name))
+    # deploy solution
+    fs::dir_copy(path = s_ex_dir, new_path = file.path(ps_rexpf_trg, 'sol', s_ex_name))
 
   }
 

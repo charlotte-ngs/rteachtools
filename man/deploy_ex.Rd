@@ -8,6 +8,8 @@ deploy_ex(
   ps_ex_path,
   ps_ex_out_dir,
   ps_sol_out_dir,
+  ps_rexpf_src = NULL,
+  ps_rexpf_trg = NULL,
   pb_debug = FALSE,
   pobj_rtt_logger = NULL
 )
@@ -18,6 +20,10 @@ deploy_ex(
 \item{ps_ex_out_dir}{directory for exercise output}
 
 \item{ps_sol_out_dir}{directory for the solution output}
+
+\item{ps_rexpf_src}{source directory for exercise Rmd file to deploy to rexpf}
+
+\item{ps_rexpf_trg}{target directory to where exercise Rmd is to be deployed to}
 
 \item{pb_debug}{flag to determine debugging status}
 
