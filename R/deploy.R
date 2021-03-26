@@ -5,7 +5,10 @@
 #' @description
 #' An parametrized Rmd source file is rendered two times once to produce a pdf-output
 #' that is used as an excercise. The second pdf-output corresponds to the solution
-#' to the exercises.
+#' to the exercises. In case the Rmarkdown notebook used on the exercise platform (rexpf)
+#' is available it is deployed to the target directory where the material for rexpf
+#' is stored. The path to the rexpf material is given by the argument ps_rexpf_trg.
+#' The Rmarkdown notebook used on rexpf can be produced with the function convert_ex_to_nb().
 #'
 #' @details
 #' The call to \code{rmarkdown::render()} takes the value for the parameters which
@@ -21,7 +24,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' deploy_ex(ps_ex_path = 'ex/asm_ex02.Rmd', ps_ex_out_dir = 'docs/ex', ps_sol_out_dir = 'docs/sol')
+#' deploy_ex(ps_ex_path     = 'ex/asm_ex02.Rmd',
+#'           ps_ex_out_dir  = 'docs/ex',
+#'           ps_sol_out_dir = 'docs/sol')
 #' }
 #'
 #' @export deploy_ex
@@ -92,16 +97,20 @@ deploy_ex <- function(ps_ex_path,
   rmarkdown::render(input = s_ex_path, output_file = s_sol_out_path, params = list(doctype = 'solution'))
 
   # deploy exercise material to rexpf
-  if (!is.null(ps_rexpf_src)){
+  if (!is.null(ps_rexpf_src) && !is.null(ps_rexpf_trg)){
     if (pb_debug)
       rtt_log_info(plogger = rtt_logger,
                    ps_caller = 'deploy_ex',
                    ps_msg = paste0(" * Deploy ex from source: ", ps_rexpf_src,
                                    " to rexpf target: ", ps_rexpf_trg, collapse = ''))
     # deploy exercise nb
-    fs::dir_copy(path = file.path(ps_rexpf_src, s_ex_name), new_path = file.path(ps_rexpf_trg, 'ex', s_ex_name))
+    s_ex_new_path <- file.path(ps_rexpf_trg, 'ex', s_ex_name)
+    if (dir.exists(s_ex_new_path)) fs::dir_delete(path = s_ex_new_path)
+    fs::dir_copy(path = file.path(ps_rexpf_src, s_ex_name), new_path = s_ex_new_path)
     # deploy solution
-    fs::dir_copy(path = s_ex_dir, new_path = file.path(ps_rexpf_trg, 'sol', s_ex_name))
+    s_sol_new_path <- file.path(ps_rexpf_trg, 'sol', s_ex_name)
+    if (dir.exists(s_sol_new_path)) fs::dir_delete(path = s_sol_new_path)
+    fs::dir_copy(path = s_ex_dir, new_path = s_sol_new_path)
 
   }
 
