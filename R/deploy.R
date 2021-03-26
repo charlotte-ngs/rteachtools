@@ -14,6 +14,8 @@
 #' @param ps_ex_path path to the source RMarkdown file
 #' @param ps_ex_out_dir directory for exercise output
 #' @param ps_sol_out_dir directory for the solution output
+#' @param ps_rexpf_src source directory for exercise Rmd file to deploy to rexpf
+#' @param ps_rexpf_trg target directory to where exercise Rmd is to be deployed to
 #' @param pb_debug flag to determine debugging status
 #' @param pobj_rtt_logger log4j logger object
 #'
@@ -26,6 +28,8 @@
 deploy_ex <- function(ps_ex_path,
                       ps_ex_out_dir,
                       ps_sol_out_dir,
+                      ps_rexpf_src    = NULL,
+                      ps_rexpf_trg    = NULL,
                       pb_debug        = FALSE,
                       pobj_rtt_logger = NULL){
   # init logging for this function
@@ -60,7 +64,8 @@ deploy_ex <- function(ps_ex_path,
     rtt_log_info(plogger = rtt_logger, ps_caller = 'deploy_ex', ps_msg = s_log_msg)
 
   # render source file to exercise version
-  s_ex_out_path <- file.path(ps_ex_out_dir, paste(tools::file_path_sans_ext(basename(ps_ex_path)), '.pdf', sep = ''))
+  s_ex_name <- tools::file_path_sans_ext(basename(s_ex_path))
+  s_ex_out_path <- file.path(ps_ex_out_dir, paste(s_ex_name, '.pdf', sep = ''))
   if (pb_debug)
     rtt_log_info(plogger = rtt_logger,
                  ps_caller = 'deploy_ex',
@@ -77,12 +82,23 @@ deploy_ex <- function(ps_ex_path,
   if (pb_debug)
     rtt_log_info(plogger = rtt_logger, ps_caller = 'deploy_ex', ps_msg = s_log_msg)
   # path to solution and render
-  s_sol_out_path <- file.path(ps_sol_out_dir, paste(tools::file_path_sans_ext(basename(s_ex_path)), '_sol.pdf', sep = ''))
+  s_sol_out_path <- file.path(ps_sol_out_dir, paste(s_ex_name, '_sol.pdf', sep = ''))
   if (pb_debug)
     rtt_log_info(plogger = rtt_logger,
                  ps_caller = 'deploy_ex',
                  ps_msg = paste0(" * Rendering ex source to: ", s_sol_out_path, collapse = ''))
   rmarkdown::render(input = s_ex_path, output_file = s_sol_out_path, params = list(doctype = 'solution'))
+
+  # deploy exercise material to rexpf
+  if (!is.null(ps_rexpf_src)){
+    if (pb_debug)
+      rtt_log_info(plogger = rtt_logger,
+                   ps_caller = 'deploy_ex',
+                   ps_msg = paste0(" * Deploy ex from source: ", ps_rexpf_src,
+                                   " to rexpf target: ", ps_rexpf_trg, collapse = ''))
+    fs::dir_copy(path = file.path(ps_rexpf_src, s_ex_name), new_path = file.path(ps_rexpf_trg, 'ex', s_ex_name))
+
+  }
 
   return(invisible(TRUE))
 }
