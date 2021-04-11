@@ -66,7 +66,7 @@ convert_ex_to_nb <- function(ps_ex_path,
     vec_ex_src <- readLines(con = con_ex_src)
     close(con = con_ex_src)
 
-    # adapt the yample front matter
+    # adapt the yaml front matter
     l_yml_fm_ex <- rmarkdown::yaml_front_matter(input = s_ex_path)
     l_yml_fm_nb <- list(title = gsub(pattern = '`r tools::toTitleCase(params$doctype)`',
                                      replacement = 'Notebook', l_yml_fm_ex$title, fixed = TRUE),

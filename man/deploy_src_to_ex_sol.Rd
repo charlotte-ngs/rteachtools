@@ -4,7 +4,22 @@
 \alias{deploy_src_to_ex_sol}
 \title{Deployment of Solutions From Unified Rmd File and of Exercise from Reduced Rmd Source}
 \usage{
-deploy_src_to_ex_sol(ps_uni_src_path)
+deploy_src_to_ex_sol(
+  ps_uni_src_path,
+  ps_ex_out_dir,
+  ps_sol_out_dir,
+  ps_nb_src_dir,
+  ps_nb_out_dir,
+  pl_master_solution_tags = list(start = "master-solution-start", end =
+    "master-solution-end"),
+  pl_aug_info_tags = list(start = "your-solution-start", end = "your-solution-end"),
+  pb_keep_src = FALSE,
+  pb_debug = FALSE,
+  pobj_rtt_logger = NULL
+)
+}
+\arguments{
+\item{ps_uni_src_path}{path to unified Rmd source file}
 }
 \description{
 This function takes as input the unified Rmd source files containing exercise problem
@@ -19,7 +34,13 @@ to produce the exercise pdf document.
 }
 \examples{
 \dontrun{
-
+s_uni_src_path <- system.file("extdata", "asm_ex06.Rmd", package = "rteachtools")
+s_ex_src_name <- tools::file_path_sans_ext(basename(s_uni_src_path))
+deploy_src_to_ex_sol(ps_uni_src_path = s_uni_src_path,
+                     ps_ex_out_dir = file.path("docs","ex"),
+                     ps_sol_out_dir = file.path("docs","sol"),
+                     ps_nb_src_dir = file.path("nb", s_ex_src_name),
+                     ps_nb_out_dir = file.path("docs", "nb"))
 }
 
 }
