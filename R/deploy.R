@@ -1,11 +1,18 @@
+## -- Deployment Using Parametrized Knitting ----------------------------------
 #'
 #'
 #' @title Deploy Exercise
 #'
 #' @description
-#' An parametrized Rmd source file is rendered two times once to produce a pdf-output
+#' An parametrized and unified Rmd source file containing both exericse problems
+#' and solutions to these problems  is rendered two times once to produce a pdf-output
 #' that is used as an excercise. The second pdf-output corresponds to the solution
-#' to the exercises. In case the Rmarkdown notebook used on the exercise platform (rexpf)
+#' to the exercises. This parametrized double-rendering only works, if the solutios
+#' do not contain any function calles of \code{knitr::include_graphics()} because
+#' this function adds a comment after the include statement in the md-output.
+#' This causes the commented out solution sections to end. In that case the
+#' deployment has to be done with the function \code{deploy_src_to_ex_sol()}.
+#' In case the Rmarkdown notebook used on the exercise platform (rexpf)
 #' is available it is deployed to the target directory where the material for rexpf
 #' is stored. The path to the rexpf material is given by the argument ps_rexpf_trg.
 #' The Rmarkdown notebook used on rexpf can be produced with the function convert_ex_to_nb().
@@ -117,4 +124,29 @@ deploy_ex <- function(ps_ex_path,
   return(invisible(TRUE))
 }
 
+
+## -- Deployment of Unified Rmd Source File To Solution and Reduced Version To Exercise ----
+#'
+#'
+#' @title Deployment of Solutions From Unified Rmd File and of Exercise from Reduced Rmd Source
+#'
+#' @description
+#' This function takes as input the unified Rmd source files containing exercise problem
+#' questions and solutions to these problems. From the unified Rmd file the solution pdf
+#' document is produced. The solution section in the unified Rmd source file must be tagged
+#' by a given html-comment. These tags are used to produce a reduced Rmd source file which
+#' does not contain the solutions to the exercise problems. The reduced Rmd file is used
+#' to produce the exercise pdf document.
+#'
+#' @details
+#'
+#' @examples
+#' \dontrun{
+#'
+#' }
+#'
+#' @export deploy_src_to_ex_sol
+deploy_src_to_ex_sol <- function(ps_uni_src_path){
+
+}
 

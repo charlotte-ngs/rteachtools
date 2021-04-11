@@ -1,0 +1,415 @@
+---
+title: Applied Statistical Methods - `r tools::toTitleCase(params$doctype)` 6
+author: Peter von Rohr
+date: "2021-03-29"
+output:
+  bookdown::pdf_document2:
+    toc: false
+    number_sections: false
+    keep_md: false
+    keep_tex: false
+header-includes:
+ \usepackage{longtable}
+ \usepackage{float}
+params:
+  doctype:
+    label: 'Document Type'
+    value: 'solution'
+    choices: ['exercise', 'solution']
+---
+
+```{r setup, include=FALSE}
+# knitr::opts_chunk$set(echo = FALSE, results = 'asis', fig.pos = 'H')
+knitr::knit_hooks$set(hook_convert_odg = rmdhelp::hook_convert_odg)
+vec_pkg <- c("glmnet")
+if (!is.element(vec_pkg, installed.packages()))
+  install.packages(vec_pkg, dependencies = TRUE)
+```
+
+
+## Problem 1: Example with LASSO
+
+```{r p01-setup, echo=FALSE}
+n_nr_ani <- 50
+n_nr_snp <- 100
+s_lasso_data_filename <- "asm_ex06_p01_lasso.txt"
+s_course_url <- "https://charlotte-ngs.github.io/gelasmss2021"
+s_lasso_data_path <- file.path(s_course_url, "data", s_lasso_data_filename)
+```
+
+The file available at `r s_lasso_data_path` contains a dataset with genotypes from `r n_nr_snp` SNP-Loci. In addition to the genomic information, the dataset also holds observations of a certain trait for `r n_nr_ani` animals. The dataset can be read into a matrix in R with the following statement.
+
+```{r data-scan-stmt, echo=FALSE, results='asis'}
+s_input_cmd <- paste0("mat_lasso_data <- matrix(scan(\"", s_lasso_data_path, "\"), nrow = ", n_nr_ani, ", byrow = TRUE)", collapse = "")
+cat("\\scriptsize\n`", s_input_cmd, "`\n\\normalsize \n", sep = "")
+```
+
+```{r eval-scan-stmt, echo=FALSE, message=FALSE, results='hide'}
+eval(parse(text = s_input_cmd))
+n_nr_row <- 5
+n_nr_col <- 5
+```
+
+Let us have a look at the first `r n_nr_row` rows and the first `r n_nr_col` columns of the matrix that stores the dataset.
+
+```{r, results='markup'}
+mat_lasso_data[1:n_nr_row,1:n_nr_col]
+```
+
+From this output, we can see that the observations of all animals can be found in the first column of the data matrix `mat_lasso_data`. In columns  2 to `r ncol(mat_lasso_data)` of the data matrix there are the genotypes of all SNP loci. The linear model is fitted with LASSO using the function `glmnet()` from the package `glmnet`. The SNP genotypes are used as explanatory variables and the observations are the response variables.
+
+
+### Your Tasks
+* Use the following R-Statement to estimate the SNP-effects using LASSO
+
+```{r model-fit, eval=FALSE, echo=TRUE, results='markup'}
+require(glmnet)
+fitsnp <- glmnet(x = mat_lasso_data[, -1], y = mat_lasso_data[, 1])
+```
+
+* Visualize the dependency between the value of the penalty term $\lambda$ and the number of explanatory variables which are not $0$.
+
+```{r plot-fit, eval=FALSE, echo=TRUE, results='markup'}
+plot(fitsnp, xvar = "lambda", label = TRUE)
+```
+
+* Use a cross-validation to determine the value of $\lambda$.
+
+```{r cv-fit, eval=FALSE, echo=TRUE, results='markup'}
+cvfitsnp <- cv.glmnet(x = mat_lasso_data[, -1], y = mat_lasso_data[, 1])
+```
+
+* Show the results of the cross-validation in a plot using the function `plot()`.
+
+```{r plot-cv, eval=FALSE, echo=TRUE, results='markup'}
+plot(cvfitsnp)
+```
+
+* In the plot of the cross-validation results there are two dashed lines which both indicated special values for $\lambda$. The first value is the minimum of all  $\lambda$-values and the second is the one that sets the most explanatory variables to $0$ with the restriction that the sum of squared errors is not further away than one standard deviation from its minimum. The two $\lambda$-values are obtained with 
+
+```{r special-lambda, eval=FALSE, echo=TRUE, results='markup'}
+cvfitsnp$lambda.min
+cvfitsnp$lambda.1se
+```
+
+* Find all coefficients which are not $0$ for both $\lambda$-values and compare them to the true values taken from the simulation. 
+
+```{r coef-min, eval=FALSE, echo=TRUE, results='markup'}
+coefmin <- coef(cvfitsnp, s = "lambda.min")
+(cofminnz <- coefmin[coefmin[, 1] != 0,])
+```
+
+```{r coef-se, eval=FALSE, echo=TRUE, results='markup'}
+coef1se <- coef(cvfitsnp, s = "lambda.1se")
+(coef1senz <- coef1se[coef1se[, 1] != 0, ])
+```
+
+The true SNP-positions from the simulation are:
+
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+(vec_sign_snp_idx <- c(73,54,26,30,7))
+```
+
+<!-- your-solution-start
+### Your Solution
+Run the R-statements as they are shown in the hints. This will result in a set of SNP-positions with an effect that is different from $0$. These SNP-positions can then be compared to the true positions from the simulation. The LASSO-estimates of the SNP-effects are obtained with the following steps.
+
+```{r}
+# fit the linear model with glmnet
+
+```
+
+```{r}
+# Visualize the results using the plot() function
+
+```
+
+```{r}
+# Determine lambda using cross-validation with the function cv.glmnet()
+
+```
+
+```{r}
+# Show the results of the cross-validation using the plot() function
+
+```
+
+```{r}
+# determine the two lambda values, given in the above plot
+
+```
+
+```{r}
+# determine the non-zero coefficients for the SNP-effects which are not zero for the two lambda values
+
+```
+
+```{r}
+# compare the SNP-positions with a non-zero effect to the true SNP positions used in the simulation
+
+```
+
+---  your-solution-end -->
+
+
+<!-- master-solution-start -->
+
+### Solution
+The linear model is fitted with the following statement.
+
+```{r model-fit, eval=TRUE, echo=TRUE, results='markup'}
+```
+
+The result of the model fit is a `glmnet`-object. The resuling object is best viewed with the following plot.
+
+```{r plot-fit, eval=TRUE, echo=TRUE, results='markup'}
+```
+
+The cross-validation is done with the function `cv.glmnet()`. 
+
+```{r cv-fit, eval=TRUE, echo=TRUE, results='markup'}
+```
+
+The results can be shown with the following plot.
+
+```{r plot-cv, eval=TRUE, echo=TRUE, results='markup'}
+```
+
+The special $\lambda$-values indicated with the dashed lines can be obtained with 
+
+```{r special-lambda, eval=TRUE, echo=TRUE, results='markup'}
+```
+
+The coefficients corresponding to the SNP-positions which are not $0$ for both $\lambda$-values are obtained with
+
+```{r coef-min, eval=TRUE, echo=TRUE, results='markup'}
+```
+
+```{r coef-se, eval=TRUE, echo=TRUE, results='markup'}
+```
+
+The SNP-positions are extracted from the coefficients as follows 
+
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+(s_snp_pos_min <- gsub(pattern = "V", replacement = "", 
+                       setdiff(names(cofminnz), "(Intercept)"), 
+                       fixed = TRUE))
+```
+
+The match between the estimated and the true SNP-positons using minimal $\lambda$ are 
+
+
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+(vec_match_snp_min <- intersect(s_snp_pos_min, as.character(vec_sign_snp_idx)))
+```
+
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+(s_snp_pos_1senz <- gsub(pattern = "V", replacement = "", 
+                         setdiff(names(coef1senz), "(Intercept)"), 
+                         fixed = TRUE))
+```
+
+The match between the estimated and the true SNP-positons using the SE-$\lambda$ are 
+
+
+```{r, eval=TRUE, echo=TRUE, results='markup'}
+(vec_match_snp_1senz <- intersect(s_snp_pos_1senz, as.character(vec_sign_snp_idx)))
+```
+
+<!-- master-solution-end -->
+
+
+
+## Problem 2: Bayesian Regression Analysis
+Given is the earlier used dataset of `breast circumference` and `body weight`. 
+
+```{r dataregression, echo=FALSE, results='asis'}
+tbl_reg <- tibble::tibble(Animal = c(1:10),
+                          `Breast Circumference` = c(176, 177, 178, 179, 179, 180, 181, 182,183, 184),
+                          `Body Weight` = c(471, 463, 481, 470, 496, 491, 518, 511, 510, 541))
+knitr::kable(tbl_reg,
+             booktabs = TRUE,
+             longtable = TRUE,
+             caption = "Dataset for Regression of Body Weight on Breast Circumference for ten Animals")
+```
+
+```{r lmreganalysis, echo=FALSE}
+lm_reg_bwbc <- lm(`Body Weight` ~ `Breast Circumference`, data = tbl_reg)
+n_res_var <- sum(lm_reg_bwbc$residuals^2)/lm_reg_bwbc$df.residual
+n_res_var_rounded <- round(n_res_var, digits = 1)
+```
+
+The model that is used is a simple linear regression model given by 
+
+$$y_i = \beta_0 + \beta_1 * x_i + \epsilon_i$$. 
+
+where $y_i$ corresponds to the body weight of animal $i$, $x_i$ is the breast circumference of animal $i$, $\beta_0$ is the unknown intercept and $\beta_1$ is the unknown regression coefficient. For reasons of simplicity, we assume the residual variance $\sigma^2$ to be known. For the later computations, we insert the estimate that is obtained from the `lm()` function. This value corresponds to $\sigma^2 = `r n_res_var_rounded`$. 
+
+### Bayesian Estimation Of Unknowns
+As already mentioned during the lecture, Bayesian estimates of unknowns are based on the posterior distribution of the unknowns given the knowns. For our regression model the unknowns correspond to 
+
+$$\beta = \left[\begin{array}{c}\beta_0 \\ \beta_1 \end{array}\right]$$
+
+ The posterior distribution of the unknowns given the knowns is $f(\beta | y)$. Using Bayes' Theorem we can write $f(\beta | y)$ as
+ 
+\begin{align}
+f(\beta | y) & =       \frac{f(\beta, y)}{f(y)} \notag \\
+             & =       \frac{f(y | \beta)f(\beta)}{f(y)} \notag \\
+             & \propto  f(y | \beta)f(\beta) \notag
+\end{align}
+
+When we do not have any specific prior knowledge about $\beta$, the prior distribution $f(\beta)$ for the unknown $\beta$ is set to a constant. Therefore we can write
+
+\begin{align}
+f(\beta | y)  & \propto  f(y | \beta)f(\beta) \notag \\
+              & \propto  f(y | \beta) \notag
+\end{align}
+
+Assuming a normal distribution for the data causes the likelihood $f(y | \beta)$ to be a multivariate normal distribution. 
+
+\begin{align}
+f(\beta | y)  & \propto  f(y | \beta) \notag \\
+              & = (2\pi\sigma^2)^{-n/2} exp \left\{ -{1 \over 2} \frac{(y - X\beta)^T(y - X\beta)}{\sigma^2} \right\}
+(\#eq:BayesLikelihood)
+\end{align}
+
+The above expression \@ref(eq:BayesLikelihood) is an $n-$ dimensional normal distribution with expected value $X\beta$ and variance-covariance matrix corresponding to $I\sigma^2$. But because we have just two unknowns $\beta_0$ and $\beta_1$ the posterior distribution $f(\beta | y)$ must have two dimensions and not $n$. The following re-arrangement can solve this problem. Let us set the variable $Q$ to 
+
+$$Q = (y - X\beta)^T(y - X\beta) = y^Ty - 2y^TX\beta + \beta^T(X^TX)\beta$$
+
+Introducing the least squares estimate $\hat{\beta} = (X^TX)^{-1}X^Ty$ into the above equation by replacing $y^TX$ with $\hat{\beta}^T(X^TX)$ results in 
+
+$$Q = y^Ty - 2 \hat{\beta}^T(X^TX)\beta + \beta^T(X^TX)\beta = y^Ty + (\beta-\hat{\beta})^T(X^TX)(\beta-\hat{\beta}) - \hat{\beta}^T(X^TX)\hat{\beta}$$
+
+Inserting this last result back into \@ref(eq:BayesLikelihood) gives
+
+\begin{align}
+f(\beta | y)  & \propto  f(y | \beta) \notag \\
+              & = (2\pi\sigma^2)^{-n/2} exp \left\{ -{1 \over 2} \frac{(y - X\beta)^T(y - X\beta)}{\sigma^2} \right\} \notag \\
+              & = (2\pi\sigma^2)^{-n/2} exp \left\{ -{1 \over 2} \frac{y^Ty + (\beta-\hat{\beta})^T(X^TX)(\beta-\hat{\beta}) - \hat{\beta}^T(X^TX)\hat{\beta}}{\sigma^2} \right\} \notag \\
+              & = (2\pi\sigma^2)^{-n/2} \left[exp \left\{ -{1 \over 2} \frac{y^Ty}{\sigma^2}\right\} 
+                  * exp\left\{ -{1 \over 2} \frac{ (\beta-\hat{\beta})^T(X^TX)(\beta-\hat{\beta})}{\sigma^2} \right\}
+                  * exp\left\{ -{1 \over 2} \frac{ - \hat{\beta}^T(X^TX)\hat{\beta}}{\sigma^2} \right\} \right]  \notag \\
+              & \propto exp\left\{ -{1 \over 2} \frac{ (\beta-\hat{\beta})^T(X^TX)(\beta-\hat{\beta})}{\sigma^2} \right\}    
+(\#eq:BayesLikelihoodRef)
+\end{align}
+
+The last proportionality results from the fact that only the term depending on $\beta$ is retained. All other terms not depending on $\beta$ are constant factors with respect to $\beta$ and can therefore be dropped. Thus $f(\beta|y)$ can be written as
+
+$$f(\beta | y)  \propto exp\left\{ -{1 \over 2} \frac{ (\beta-\hat{\beta})^T(X^TX)(\beta-\hat{\beta})}{\sigma^2} \right\}$$
+which is recognized as proportional to a two dimensional normal density with mean $\hat{\beta}$ and variance $(X^TX)^{-1}\sigma^2$. Thus in the simple setting the mean of the posterior mean can already be seen from the above formula. But in a more complex setting, the posterior distribution does not have a standard form and we need to setup a sampling scheme which allows us to draw random numbers from the posterior distribution. The sampling scheme that we are introducing here is called the __Gibbs Sampler__. 
+
+
+### Gibbs Sampler for $\beta$
+The simple regression model that we are using for the breast circumference and the body weight data can be written in matrix-vector notation as 
+
+$$y = 1\beta_0 + x\beta_1 + \epsilon$$
+
+In the Gibbs sampling scheme both unknowns $\beta_0$ and $\beta_1$ are sampled from their full conditional distributions. For $\beta_0$ the full conditional posterior distribution is $f(\beta_0 | \beta_1, y)$ which is computed for the current value of $\beta_1$. Separating $\beta_0$ from the other unknowns yields the linear model 
+
+$$w_0 = 1\beta_0 + \epsilon$$
+where $w_0 = y - x\beta_1$. The least squares estimator of $\beta_0$ is 
+
+$$\hat{\beta}_0 = (1^T1)^{-1}1^Tw_0$$
+with variance 
+
+$$var(\hat{\beta}_0) =  (1^T1)^{-1} \sigma^2$$
+
+Applying the same strategy as for $f(\beta | y)$, it can be shown that $f(\beta_0 | \beta_1, y)$ is a normal distribution with mean $\hat{\beta}_0$ as mean and $(1^T1)^{-1} \sigma^2$ as variance. The full-conditional posterior of $\beta_1$ can be derived the same way, leading to 
+
+$$\hat{\beta}_1 = (x^Tx)^{-1}x^Tw_1$$
+
+with variance $var(\hat{\beta}_1) = (x^Tx)^{-1} \sigma^2$ where $w_1 = y - 1\beta_0$. 
+
+
+### Your Task
+* Create a Gibbs Sampling scheme for the dataset shown in Table \@ref(tab:dataregression). 
+* Use the mean of the generated samples as an estimate for the unknowns $\beta_0$ and $\beta_1$.
+
+
+<!-- your-solution-start
+### Your Solution
+In the problem description, the residual variance $\sigma^2$ is assumed to be known. Instead of using a fixed value, we use the estimate that can be computed based on the residuals from a least squares model.
+
+```{r}
+# compute residual variance based on residuals of fitting lm() to data
+
+# prepare the vector y of observations and the matrix X for the intercept and the predictor variable
+
+# initialise a vector beta for the current estimate and a vector meanBeta for the mean of all the samples
+
+# loop over a given number of iterations to produce the samples for the unknowns
+
+```
+
+---  your-solution-end -->
+
+
+<!-- master-solution-start -->
+
+### Solution
+We have mentioned earlier that we are using the residual variance that is obtained from the least squares analysis which is shown just below.
+
+```{r lmreganalysis, echo=TRUE}
+```
+
+We start by setting up the matrix $X$ with two columns. The first column contains only ones and the second column contains the measured breast circumference data. 
+
+```{r}
+n_nr_obs <- nrow(tbl_reg)
+X <- matrix(c(rep(1, n_nr_obs), tbl_reg$`Breast Circumference`), ncol = 2)
+```
+
+In the next step, we assign the observed body weights to the vector $y$.
+
+```{r}
+y <- tbl_reg$`Body Weight`
+```
+
+Before, the sampling iterations are started, the vector used for the sampled values is initialised.
+
+```{r}
+beta <- c(0,0)
+meanBeta <- c(0,0)
+```
+
+The random samples are drawn in a loop where in turn the unknowns are updated. Before starting the loop, we have to fix the random number generator seed, such that we get reproducible results.
+
+```{r}
+#' fix the seed
+set.seed(123942)
+#' fix the number of samples
+niter <- 100000
+#' loop over the iterations
+for (iter in 1:niter){
+  # sampling the intercept beta_0
+  w <- y - X[,2] * beta[2]
+  x <- X[,1]
+  xtxi <- 1/crossprod(x)
+  betaHat <- crossprod(x, w) * xtxi
+  beta[1] <- rnorm(1, betaHat, sqrt(xtxi * n_res_var))
+  # sample the slope beta_1
+  w <- y - X[,1] * beta[1]
+  x <- X[,2]
+  xtxi <- 1/crossprod(x)
+  betaHat <- crossprod(x, w) * xtxi
+  beta[2] <- rnorm(1, betaHat, sqrt(xtxi * n_res_var))
+  # sum up the estimate
+  meanBeta <- meanBeta + beta
+  # output every 10000 rounds
+  if ((iter%%10000) == 0){
+    cat(sprintf("Iteration: %d \n", iter))
+    cat(sprintf("Intercept: %6.3f \n", meanBeta[1]/iter))
+    cat(sprintf("Slope:     %6.3f \n", meanBeta[2]/iter))
+  }
+}
+```
+
+The last line of the above output corresponds to the Bayesian estimate of the intercept and the slope. That would need to be compared to the least squares estimate which is obtained from 
+
+```{r}
+summary(lm_reg_bwbc)
+```
+
+<!-- master-solution-end -->
+

@@ -2,6 +2,7 @@
 
 export(convert_ex_to_nb)
 export(deploy_ex)
+export(deploy_src_to_ex_sol)
 export(get_rtt_logger)
 export(rtt_log_debug)
 export(rtt_log_error)
