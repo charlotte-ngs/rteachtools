@@ -34,7 +34,7 @@ devtools::install_github("charlotte-ngs/rteachtools")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+```{r example, eval=FALSE}
 library(rteachtools)
 ## creating a new exercise document
 rteachtools::create_exercise(ps_ex_path    = "ex/gel_ex01/gel_ex01.Rmd",
