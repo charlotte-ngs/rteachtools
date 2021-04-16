@@ -1,7 +1,7 @@
 ---
-title: {course_name} - `r tools::toTitleCase(params$doctype)` {exercise_count}
-author: {author}
-date: {creation_date}
+title: {{course_name}} - `r tools::toTitleCase(params$doctype)` {{exercise_count}}
+author: {{author}}
+date: {{creation_date}}
 output:
   bookdown::pdf_document2:
     toc: false
