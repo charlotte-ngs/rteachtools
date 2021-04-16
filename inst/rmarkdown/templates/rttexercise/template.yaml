@@ -1,0 +1,4 @@
+name: Exercise Skeleton
+description: >
+   Skeleton for unified Rmarkdown source file for a course exercise
+create_dir: TRUE
