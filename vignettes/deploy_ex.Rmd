@@ -120,6 +120,12 @@ vec_ex <- cut_section(pvec_src = vec_ex_aug, pl_tag = list(start="your-solution-
 
 The source file for the exercise can be created by writing `vec_ex` to a file which can then be rendered and/or copied to the deployment targets.
 
+
+```{r, echo=FALSE}
+# no longer evaluate after here
+knitr::opts_chunk$set(eval = FALSE)
+```
+
 ```{r}
 cat(paste0(vec_ex, collapse = "\n"), "\n", file = "ex.Rmd")
 ```
