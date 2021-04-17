@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rteachtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -219,6 +219,44 @@
 <p>The test works with</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">vec_ex_aug</span> <span class="op">&lt;-</span> <span class="fu">cut_line</span><span class="op">(</span>pvec_src <span class="op">=</span> <span class="va">vec_ex_aug</span>, pvec_pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"your-solution-start"</span>, <span class="st">"your-solution-end"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="add-included-material-to-deployment" class="section level2">
+<h2 class="hasAnchor">
+<a href="#add-included-material-to-deployment" class="anchor"></a>Add Included Material To Deployment</h2>
+<p>In the unified Rmd source file different types of material like diagrams might be included. When rendering the different output instances to pdf- or html-output, the included material must be available. Hence the required included material for the different output instances must be copied to correct source directories.</p>
+<p>First we have to find the included material from the sources. We are showing this with example of exercise <code>gel_ex01</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">s_ex_name</span> <span class="op">&lt;-</span> <span class="st">"gel_ex01"</span>
+<span class="va">s_ex_uni_src_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="va">s_ex_name</span>, package <span class="op">=</span> <span class="st">"rteachtools"</span><span class="op">)</span>
+<span class="op">(</span><span class="va">s_ex_uni_src_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">s_ex_uni_src_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">s_ex_name</span>, <span class="st">".Rmd"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>The unified source file is read to a vector of characters</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">vec_uni_src</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span>con <span class="op">=</span> <span class="va">s_ex_uni_src_path</span><span class="op">)</span></code></pre></div>
+<p>We are searching for material that is included</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"knitr::include_graphics"</span>, <span class="va">vec_uni_src</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>The function <code><a href="../reference/grep_include.html">grep_include()</a></code> is used to obain a list of incldued files.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">grep_include</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pvec_src</span>, <span class="va">ps_grep_pattern</span>, <span class="va">pvec_repl_pattern</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"\\(path = "</span>, <span class="st">"\""</span>, <span class="st">"\\)"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">vec_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="va">ps_grep_pattern</span>, <span class="va">pvec_src</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="co"># remove patterns</span>
+  <span class="va">vec_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="va">ps_grep_pattern</span>, replacement <span class="op">=</span> <span class="st">""</span>, <span class="va">vec_result</span><span class="op">)</span>
+  <span class="co"># remove remaining patterns</span>
+  <span class="kw">for</span> <span class="op">(</span><span class="va">p</span> <span class="kw">in</span> <span class="va">pvec_repl_pattern</span><span class="op">)</span><span class="op">{</span>
+    <span class="va">vec_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="va">p</span>, replacement <span class="op">=</span> <span class="st">""</span>, <span class="va">vec_result</span><span class="op">)</span>
+  <span class="op">}</span>
+  
+  <span class="co"># return result</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">vec_result</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p>Test the above function</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">vec_include</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/grep_include.html">grep_include</a></span><span class="op">(</span>pvec_src <span class="op">=</span> <span class="va">vec_uni_src</span>, ps_grep_pattern <span class="op">=</span> <span class="st">"knitr::include_graphics"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>In case we are extracting the includes just from an exercise source file, the result might look different.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">vec_ex_aug</span> <span class="op">&lt;-</span> <span class="fu">cut_section</span><span class="op">(</span>pvec_src <span class="op">=</span> <span class="va">vec_uni_src</span>, pl_tag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>start<span class="op">=</span><span class="st">"master-solution-start"</span>, end <span class="op">=</span> <span class="st">"master-solution-end"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">vec_ex</span> <span class="op">&lt;-</span> <span class="fu">cut_section</span><span class="op">(</span>pvec_src <span class="op">=</span> <span class="va">vec_ex_aug</span>, pl_tag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>start<span class="op">=</span><span class="st">"your-solution-start"</span>, end <span class="op">=</span> <span class="st">"your-solution-end"</span><span class="op">)</span><span class="op">)</span>
+<span class="op">(</span><span class="va">vec_include_ex_src</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/grep_include.html">grep_include</a></span><span class="op">(</span>pvec_src <span class="op">=</span> <span class="va">vec_ex</span>, ps_grep_pattern <span class="op">=</span> <span class="st">"knitr::include_graphics"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>

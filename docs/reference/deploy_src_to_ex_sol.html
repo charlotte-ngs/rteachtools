@@ -45,7 +45,10 @@ questions and solutions to these problems. From the unified Rmd file the solutio
 document is produced. The solution section in the unified Rmd source file must be tagged
 by a given html-comment. These tags are used to produce a reduced Rmd source file which
 does not contain the solutions to the exercise problems. The reduced Rmd file is used
-to produce the exercise pdf document." />
+to produce the exercise pdf document. The unified Rmd source file contains also augmented
+information which is commented out. For the notebook this information will be activated.
+The augmented information consists of hints to the students on how to solve the exercise
+problems." />
 
 
 
@@ -77,7 +80,7 @@ to produce the exercise pdf document." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rteachtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -142,7 +145,10 @@ questions and solutions to these problems. From the unified Rmd file the solutio
 document is produced. The solution section in the unified Rmd source file must be tagged
 by a given html-comment. These tags are used to produce a reduced Rmd source file which
 does not contain the solutions to the exercise problems. The reduced Rmd file is used
-to produce the exercise pdf document.</p>
+to produce the exercise pdf document. The unified Rmd source file contains also augmented
+information which is commented out. For the notebook this information will be activated.
+The augmented information consists of hints to the students on how to solve the exercise
+problems.</p>
     </div>
 
     <pre class="usage"><span class='fu'>deploy_src_to_ex_sol</span><span class='op'>(</span>
@@ -165,6 +171,42 @@ to produce the exercise pdf document.</p>
     <tr>
       <th>ps_uni_src_path</th>
       <td><p>path to unified Rmd source file</p></td>
+    </tr>
+    <tr>
+      <th>ps_ex_out_dir</th>
+      <td><p>output directory for exercise pdf-file</p></td>
+    </tr>
+    <tr>
+      <th>ps_sol_out_dir</th>
+      <td><p>output directory for solution pdf-file</p></td>
+    </tr>
+    <tr>
+      <th>ps_nb_src_dir</th>
+      <td><p>source directory for exercise notebook</p></td>
+    </tr>
+    <tr>
+      <th>ps_nb_out_dir</th>
+      <td><p>output directory for html-version of exercise notebook</p></td>
+    </tr>
+    <tr>
+      <th>pl_master_solution_tags</th>
+      <td><p>list of tags indicating section of master solution</p></td>
+    </tr>
+    <tr>
+      <th>pl_aug_info_tags</th>
+      <td><p>list of tags indicating section with augmented information</p></td>
+    </tr>
+    <tr>
+      <th>pb_keep_src</th>
+      <td><p>flag to keep sources</p></td>
+    </tr>
+    <tr>
+      <th>pb_debug</th>
+      <td><p>flag for producing debug output</p></td>
+    </tr>
+    <tr>
+      <th>pobj_rtt_logger</th>
+      <td><p>logger object</p></td>
     </tr>
     </table>
 
