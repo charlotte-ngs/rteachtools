@@ -1,4 +1,6 @@
-# rteachtools (development version)
+# rteachtools 0.0.2
+
+* Deployment also works with included diagrams
 
 # rteachtools 0.0.1
 
