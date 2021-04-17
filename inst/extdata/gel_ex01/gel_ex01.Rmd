@@ -1,0 +1,128 @@
+---
+title: Genetic Evaluation - `r tools::toTitleCase(params$doctype)` 1
+author: Peter von Rohr
+date: 2021-04-16
+output:
+  bookdown::pdf_document2:
+    toc: false
+    number_sections: false
+    keep_md: false
+    keep_tex: false
+header-includes:
+ \usepackage{longtable}
+ \usepackage{float}
+params:
+  doctype:
+    label: 'Document Type'
+    value: 'solution'
+    choices: ['exercise', 'solution', 'notebook']
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# rmdhelp::show_knit_hook_call()
+knitr::knit_hooks$set(hook_convert_odg = rmdhelp::hook_convert_odg)
+```
+
+
+## Problem 1: Breeding Programs
+What are the components of a breeding program. Insert the components into the following diagram.
+
+```{r empty-bp-diagram, echo=FALSE, hook_convert_odg=TRUE, fig_path="odg", out.width="11cm"}
+#rmdhelp::use_odg_graphic(ps_path = "odg/empty-bp-diagram.odg")
+knitr::include_graphics(path = "odg/empty-bp-diagram.png")
+```
+
+
+<!-- your-solution-start
+### Your Solution
+Fill out the above shown diagram with the components of a breeding program.
+
+---  your-solution-end -->
+
+
+<!-- master-solution-start -->
+
+### Solution
+A breeding program consists of the following components.
+
+* Breeding Goal
+* Performance Test
+* Reproduction Technologies
+* Breeding Value Prediction
+* Selection and Mating
+* Selection Response
+
+The completed version of the above diagram looks as follows
+
+```{r solution-bp-diagram, echo=FALSE, hook_convert_odg=TRUE, fig_path="odg", out.width="11cm"}
+#rmdhelp::use_odg_graphic(ps_path = "odg/solution-bp-diagram.odg")
+knitr::include_graphics(path = "odg/solution-bp-diagram.png")
+```
+
+
+<!-- master-solution-end -->
+
+
+## Problem 2: Performance Test
+```{r setup_p02, echo=FALSE}
+b_p02 <- 0.75
+h2_p02 <- 0.25
+bull_age_p02 <- 12
+gest_len_p02 <- 9
+afc_p02 <- 27
+```
+
+In a traditional dairy cattle breeding program, sires are selected based on the predicted breeding values based on the performance of their daughters. For a solid selection decision, we want that the reliability ($B$) to be greater than $`r b_p02`$. The reliability of a predicted breeding value can be approximated by the following formula. 
+
+$$B = \frac{n}{n+k}$$
+where $n$ stands for the number of daughters and $k$ corresponds to the term $(4-h^2)/h^2$. The variable $h^2$ is the heritability of the trait under investigation. For our example we assume that $h^2 = `r h2_p02`$. 
+
+### Your Task
+* Compute the number of daugthers $n$ that must be tested for a given sire such that $B$ is at least $0.5$. 
+* How long does it take from the birth of a given sire to the time point where the predicted breeding value of the bull with a reliability of $B$ of at least $0.5$ is available? Here we assume that the first semen can be harvested from the bull at an age of $`r bull_age_p02`$ months and the average age at first calving is $`r afc_p02`$ months.
+
+<!-- your-solution-start
+### Your Solution
+For the first task, start by computing the value of $k$ for the given heritability $h^2$. Then solve the above equation for the number of daughters $n$ and insert the given numbers for $B$ and the computed value of $k$. 
+
+---  your-solution-end -->
+
+
+<!-- master-solution-start -->
+
+### Solution
+The minimum number of daughters can be computed as shown below.
+
+```{r sol_p02_a, echo=FALSE}
+k_p02 <- (4-h2_p02) / h2_p02
+n_p02 <- b_p02 * k_p02/(1-b_p02)
+```
+
+* __Step 1__: Computation of $k$ 
+
+$$k = \frac{4-h^2}{h^2} = \frac{4 - `r h2_p02`}{`r h2_p02`} = `r k_p02`$$
+
+* __Step 2__: Solve for $n$
+
+$$B = \frac{n}{n+k}$$
+$$B(n+k) = n$$
+$$Bk = n - Bn$$
+$$Bk = n(1-B)$$
+$$n = \frac{Bk}{(1-B)} = \frac{`r b_p02` * `r k_p02`}{1 - `r b_p02`} = `r n_p02`$$
+
+The time that it takes from the birth of a bull calf to the publication of the predicted breeding value based on daughter performance consists of the following time components.
+
+```{r sol_p02_b}
+age_test_result <- bull_age_p02 + gest_len_p02 + afc_p02
+```
+
+* Age of the bull at first harvest of semen: $12$ months
+* Gestation length: $9$ months
+* Age at first calfing: $30$ months
+
+In total this makes `r age_test_result` months. It must be noted that this is the minimum time requirement. It can only be achieved, if the semen from the young test bull can be used all at the same time. This can only happen, if there are enough farmers willing to inseminate the cows with the test bull. 
+
+<!-- master-solution-end -->
+   
