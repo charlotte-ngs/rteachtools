@@ -4,7 +4,11 @@
 # rteachtools
 
 <!-- badges: start -->
+
 <!-- badges: end -->
+
+The package website can be found at
+<https://charlotte-ngs.github.io/rteachtools/>
 
 The goal of rteachtools is to provide basic functionality to help in
 teaching courses
@@ -34,6 +38,6 @@ rteachtools::create_exercise(ps_ex_path    = "ex/gel_ex01/gel_ex01.Rmd",
                                                   author         = "Peter von Rohr"))
 ```
 
-------------------------------------------------------------------------
+-----
 
-*Latest Changes: 2021-04-16, 11:42:02 ( pvr )*
+*Latest Changes: 2021-04-17, 13:27:59 ( peter )*
