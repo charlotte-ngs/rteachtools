@@ -260,6 +260,7 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
   }
   # path to solution and render
   s_sol_out_path <- file.path(ps_sol_out_dir, paste(s_ex_src_name, '_sol.pdf', sep = ''))
+  if (fs::file_exists(path = s_sol_out_path)) fs::file_delete(path = s_sol_out_path)
   rmarkdown::render(input = s_uni_src_path, output_file = s_sol_out_path, params = list(doctype = 'solution'))
 
   # do the deployment and the rendering of nb
@@ -274,7 +275,7 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
     s_nb_include <- paste0(tools::file_path_sans_ext(vec_nb_includes[idx]), ".odg")
     s_new_dir <- file.path(s_nb_src_dir, dirname(s_nb_include))
     if (!dir.exists(s_new_dir)) dir.create(s_new_dir, recursive = TRUE)
-    fs::file_copy(path = file.path(s_uni_src_dir, s_nb_include), new_path = s_new_dir)
+    fs::file_copy(path = file.path(s_uni_src_dir, s_nb_include), new_path = s_new_dir, overwrite = TRUE)
   }
 
   # render the nb
