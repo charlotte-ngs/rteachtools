@@ -149,6 +149,7 @@ deploy_ex <- function(ps_ex_path,
 #' @param ps_sol_out_dir output directory for solution pdf-file
 #' @param ps_nb_src_dir source directory for exercise notebook
 #' @param ps_nb_out_dir output directory for html-version of exercise notebook
+#' @param ps_rexpf_trg target directory for material related to r-exercise platform
 #' @param pl_master_solution_tags list of tags indicating section of master solution
 #' @param pl_aug_info_tags list of tags indicating section with augmented information
 #' @param pb_keep_src flag to keep sources
@@ -172,12 +173,13 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
                                  ps_sol_out_dir,
                                  ps_nb_src_dir,
                                  ps_nb_out_dir,
+                                 ps_rexpf_trg            = NULL,
                                  pl_master_solution_tags = list(start = "master-solution-start",
                                                                 end   = "master-solution-end"),
-                                 pl_aug_info_tags = list(start="your-solution-start", end = "your-solution-end"),
-                                 pb_keep_src      = FALSE,
-                                 pb_debug         = FALSE,
-                                 pobj_rtt_logger  = NULL){
+                                 pl_aug_info_tags        = list(start="your-solution-start", end = "your-solution-end"),
+                                 pb_keep_src             = FALSE,
+                                 pb_debug                = FALSE,
+                                 pobj_rtt_logger         = NULL){
   # init logging for this function
   if (pb_debug){
     if (is.null(pobj_rtt_logger)){
@@ -280,6 +282,30 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
 
   # render the nb
   rmarkdown::render(input = s_nb_src_path, output_dir = ps_nb_out_dir)
+
+  # deploy exercise material to rexpf
+  if (!is.null(ps_rexpf_trg)){
+    s_ex_new_path <- file.path(ps_rexpf_trg, 'ex', s_ex_src_name)
+    if (pb_debug)
+      rtt_log_info(plogger = rtt_logger,
+                   ps_caller = 'deploy_src_to_ex_sol',
+                   ps_msg = paste0(" * Deploy ex from source: ", s_nb_src_dir,
+                                   " to rexpf target: ", s_ex_new_path, collapse = ''))
+    # if target ex dir exist, remove it first
+    if (dir.exists(s_ex_new_path)) fs::dir_delete(path = s_ex_new_path)
+    fs::dir_copy(path = s_nb_src_dir, new_path = s_ex_new_path)
+    # deploy solution
+    s_sol_new_path <- file.path(ps_rexpf_trg, 'sol', s_ex_src_name)
+    if (pb_debug)
+        rtt_log_info(plogger = rtt_logger,
+                     ps_caller = 'deploy_src_to_ex_sol',
+                     ps_msg = paste0(" * Deploy sol from source: ", s_uni_src_dir,
+                                     " to rexpf target: ", s_sol_new_path, collapse = ''))
+    # if target solution directory exists, remove it first
+    if (dir.exists(s_sol_new_path)) fs::dir_delete(path = s_sol_new_path)
+    fs::dir_copy(path = s_uni_src_dir, new_path = s_sol_new_path)
+
+  }
 
   # return invisibly
   return(invisible(TRUE))

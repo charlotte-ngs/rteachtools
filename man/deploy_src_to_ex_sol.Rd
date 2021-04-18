@@ -10,6 +10,7 @@ deploy_src_to_ex_sol(
   ps_sol_out_dir,
   ps_nb_src_dir,
   ps_nb_out_dir,
+  ps_rexpf_trg = NULL,
   pl_master_solution_tags = list(start = "master-solution-start", end =
     "master-solution-end"),
   pl_aug_info_tags = list(start = "your-solution-start", end = "your-solution-end"),
@@ -28,6 +29,8 @@ deploy_src_to_ex_sol(
 \item{ps_nb_src_dir}{source directory for exercise notebook}
 
 \item{ps_nb_out_dir}{output directory for html-version of exercise notebook}
+
+\item{ps_rexpf_trg}{target directory for material related to r-exercise platform}
 
 \item{pl_master_solution_tags}{list of tags indicating section of master solution}
 
