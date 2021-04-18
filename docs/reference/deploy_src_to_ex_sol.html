@@ -80,7 +80,7 @@ problems." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rteachtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
       </span>
     </div>
 
@@ -157,6 +157,7 @@ problems.</p>
   <span class='va'>ps_sol_out_dir</span>,
   <span class='va'>ps_nb_src_dir</span>,
   <span class='va'>ps_nb_out_dir</span>,
+  ps_rexpf_trg <span class='op'>=</span> <span class='cn'>NULL</span>,
   pl_master_solution_tags <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>start <span class='op'>=</span> <span class='st'>"master-solution-start"</span>, end <span class='op'>=</span>
     <span class='st'>"master-solution-end"</span><span class='op'>)</span>,
   pl_aug_info_tags <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>start <span class='op'>=</span> <span class='st'>"your-solution-start"</span>, end <span class='op'>=</span> <span class='st'>"your-solution-end"</span><span class='op'>)</span>,
@@ -187,6 +188,10 @@ problems.</p>
     <tr>
       <th>ps_nb_out_dir</th>
       <td><p>output directory for html-version of exercise notebook</p></td>
+    </tr>
+    <tr>
+      <th>ps_rexpf_trg</th>
+      <td><p>target directory for material related to r-exercise platform</p></td>
     </tr>
     <tr>
       <th>pl_master_solution_tags</th>
