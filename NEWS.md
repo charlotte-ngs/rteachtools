@@ -1,3 +1,7 @@
+# rteachtools 0.0.3
+
+* Resolved issue with missing diagrams in notebook
+
 # rteachtools 0.0.2
 
 * Deployment also works with included diagrams
