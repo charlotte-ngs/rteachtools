@@ -120,6 +120,12 @@ vec_ex <- cut_section(pvec_src = vec_ex_aug, pl_tag = list(start="your-solution-
 
 The source file for the exercise can be created by writing `vec_ex` to a file which can then be rendered and/or copied to the deployment targets.
 
+
+```{r, echo=FALSE}
+# no longer evaluate after here
+knitr::opts_chunk$set(eval = FALSE)
+```
+
 ```{r}
 cat(paste0(vec_ex, collapse = "\n"), "\n", file = "ex.Rmd")
 ```
@@ -156,6 +162,62 @@ The test works with
 
 ```{r}
 vec_ex_aug <- cut_line(pvec_src = vec_ex_aug, pvec_pattern = c("your-solution-start", "your-solution-end"))
+```
+
+
+## Add Included Material To Deployment
+In the unified Rmd source file different types of material like diagrams might be included. When rendering the different output instances to pdf- or html-output, the included material must be available. Hence the required included material for the different output instances must be copied to correct source directories.
+
+First we have to find the included material from the sources. We are showing this with example of exercise `gel_ex01`. 
+
+```{r}
+s_ex_name <- "gel_ex01"
+s_ex_uni_src_dir <- system.file("extdata", s_ex_name, package = "rteachtools")
+(s_ex_uni_src_path <- file.path(s_ex_uni_src_dir, paste0(s_ex_name, ".Rmd")))
+```
+
+The unified source file is read to a vector of characters
+
+```{r}
+vec_uni_src <- readLines(con = s_ex_uni_src_path)
+```
+
+We are searching for material that is included
+
+```{r}
+grep(pattern = "knitr::include_graphics", vec_uni_src, fixed = TRUE, value = TRUE)
+```
+
+The function `grep_include()` is used to obain a list of incldued files.
+
+```{r}
+grep_include <- function(pvec_src, ps_grep_pattern, pvec_repl_pattern = c("\\(path = ", "\"", "\\)")){
+  vec_result <- grep(pattern = ps_grep_pattern, pvec_src, fixed = TRUE, value = TRUE)
+  # remove patterns
+  vec_result <- gsub(pattern = ps_grep_pattern, replacement = "", vec_result)
+  # remove remaining patterns
+  for (p in pvec_repl_pattern){
+    vec_result <- gsub(pattern = p, replacement = "", vec_result)
+  }
+  
+  # return result
+  return(vec_result)
+}
+```
+
+Test the above function
+
+```{r}
+(vec_include <- grep_include(pvec_src = vec_uni_src, ps_grep_pattern = "knitr::include_graphics"))
+```
+
+In case we are extracting the includes just from an exercise source file, the result might look different.
+
+
+```{r}
+vec_ex_aug <- cut_section(pvec_src = vec_uni_src, pl_tag = list(start="master-solution-start", end = "master-solution-end"))
+vec_ex <- cut_section(pvec_src = vec_ex_aug, pl_tag = list(start="your-solution-start", end = "your-solution-end"))
+(vec_include_ex_src <- grep_include(pvec_src = vec_ex, ps_grep_pattern = "knitr::include_graphics"))
 ```
 
 

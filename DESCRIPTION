@@ -1,12 +1,17 @@
 Package: rteachtools
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.1
+Title: Tools For Teaching
+Version: 0.0.3
 Authors@R: 
     person(given = "Peter",
            family = "von Rohr",
            role = c("aut", "cre"),
-           email = "peter.vonrohr@qualitasag.ch")
-Description: What the package does (one paragraph).
+           email = "peter.vonrohr@gmail.com")
+Description: Teaching courses requires to create, manage, distribute and publish 
+    a lot of material for the students. Nowadays the publication and the distribution 
+    is done via the web. This package contains a set of tools that fascilitates the 
+    management of the material needed in a course.
+URL: https://charlotte-ngs.github.io/rteachtools/
+BugReports: https://github.com/charlotte-ngs/rteachtools/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en

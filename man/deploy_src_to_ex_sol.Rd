@@ -10,6 +10,7 @@ deploy_src_to_ex_sol(
   ps_sol_out_dir,
   ps_nb_src_dir,
   ps_nb_out_dir,
+  ps_rexpf_trg = NULL,
   pl_master_solution_tags = list(start = "master-solution-start", end =
     "master-solution-end"),
   pl_aug_info_tags = list(start = "your-solution-start", end = "your-solution-end"),
@@ -20,6 +21,26 @@ deploy_src_to_ex_sol(
 }
 \arguments{
 \item{ps_uni_src_path}{path to unified Rmd source file}
+
+\item{ps_ex_out_dir}{output directory for exercise pdf-file}
+
+\item{ps_sol_out_dir}{output directory for solution pdf-file}
+
+\item{ps_nb_src_dir}{source directory for exercise notebook}
+
+\item{ps_nb_out_dir}{output directory for html-version of exercise notebook}
+
+\item{ps_rexpf_trg}{target directory for material related to r-exercise platform}
+
+\item{pl_master_solution_tags}{list of tags indicating section of master solution}
+
+\item{pl_aug_info_tags}{list of tags indicating section with augmented information}
+
+\item{pb_keep_src}{flag to keep sources}
+
+\item{pb_debug}{flag for producing debug output}
+
+\item{pobj_rtt_logger}{logger object}
 }
 \description{
 This function takes as input the unified Rmd source files containing exercise problem
@@ -27,7 +48,10 @@ questions and solutions to these problems. From the unified Rmd file the solutio
 document is produced. The solution section in the unified Rmd source file must be tagged
 by a given html-comment. These tags are used to produce a reduced Rmd source file which
 does not contain the solutions to the exercise problems. The reduced Rmd file is used
-to produce the exercise pdf document.
+to produce the exercise pdf document. The unified Rmd source file contains also augmented
+information which is commented out. For the notebook this information will be activated.
+The augmented information consists of hints to the students on how to solve the exercise
+problems.
 }
 \details{
 

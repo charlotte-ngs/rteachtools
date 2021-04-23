@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
+The package website can be found at  https://charlotte-ngs.github.io/rteachtools/
+
 The goal of rteachtools is to provide basic functionality to help in teaching courses
 
 

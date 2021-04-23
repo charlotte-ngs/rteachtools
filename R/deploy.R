@@ -136,20 +136,24 @@ deploy_ex <- function(ps_ex_path,
 #' document is produced. The solution section in the unified Rmd source file must be tagged
 #' by a given html-comment. These tags are used to produce a reduced Rmd source file which
 #' does not contain the solutions to the exercise problems. The reduced Rmd file is used
-#' to produce the exercise pdf document.
+#' to produce the exercise pdf document. The unified Rmd source file contains also augmented
+#' information which is commented out. For the notebook this information will be activated.
+#' The augmented information consists of hints to the students on how to solve the exercise
+#' problems.
 #'
 #' @details
 #'
+#'
 #' @param ps_uni_src_path path to unified Rmd source file
-#' @param ps_ex_out_dir exercise output directory
-#' @param ps_sol_out_dir solution output directory
-#' @param ps_nb_src_dir notebook source directory
-#' @param ps_nb_out_dir notebook output directory
-#' @param ps_rexpf_trg target for r exercise platform
-#' @param pl_master_solution_tags list of tags for master solution
-#' @param pl_aug_info_tags list of tags for augmented solutions
-#' @param pb_keep_src flag whether to keep source file
-#' @param pb_debug debug flag
+#' @param ps_ex_out_dir output directory for exercise pdf-file
+#' @param ps_sol_out_dir output directory for solution pdf-file
+#' @param ps_nb_src_dir source directory for exercise notebook
+#' @param ps_nb_out_dir output directory for html-version of exercise notebook
+#' @param ps_rexpf_trg target directory for material related to r-exercise platform
+#' @param pl_master_solution_tags list of tags indicating section of master solution
+#' @param pl_aug_info_tags list of tags indicating section with augmented information
+#' @param pb_keep_src flag to keep sources
+#' @param pb_debug flag for producing debug output
 #' @param pobj_rtt_logger logger object
 #'
 #' @examples
@@ -169,13 +173,13 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
                                  ps_sol_out_dir,
                                  ps_nb_src_dir,
                                  ps_nb_out_dir,
-                                 ps_rexpf_trg     = NULL,
+                                 ps_rexpf_trg            = NULL,
                                  pl_master_solution_tags = list(start = "master-solution-start",
                                                                 end   = "master-solution-end"),
-                                 pl_aug_info_tags = list(start="your-solution-start", end = "your-solution-end"),
-                                 pb_keep_src      = FALSE,
-                                 pb_debug         = FALSE,
-                                 pobj_rtt_logger  = NULL){
+                                 pl_aug_info_tags        = list(start="your-solution-start", end = "your-solution-end"),
+                                 pb_keep_src             = FALSE,
+                                 pb_debug                = FALSE,
+                                 pobj_rtt_logger         = NULL){
   # init logging for this function
   if (pb_debug){
     if (is.null(pobj_rtt_logger)){
@@ -198,6 +202,9 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
                  ps_msg = paste0(" * Setting source path to: ", s_uni_src_path, collapse = ''))
   if (!file.exists(s_uni_src_path))
     stop(" *** [deploy_ex] ERROR: CANNOT FIND exercise source path: ", s_uni_src_path)
+
+  # define parent directory of uni source path
+  s_uni_src_dir <- dirname(s_uni_src_path)
 
   # read unified source file into a vector
   vec_uni_src <- readLines(con = s_uni_src_path)
@@ -237,9 +244,11 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
   if (!dir.exists(ps_ex_out_dir)){
     dir.create(ps_ex_out_dir, recursive = TRUE)
   }
-  # write exercise source to source file
+  # write exercise source to source file in the same directory as the unified source file
+  # this makes it possible to have all included graphics files available.
   s_ex_src_name <- tools::file_path_sans_ext(basename(s_uni_src_path))
-  s_ex_src_path <- file.path(ps_ex_out_dir, paste0(s_ex_src_name, "_ex_src.Rmd"))
+  s_ex_src_dir <- s_uni_src_dir
+  s_ex_src_path <- file.path(s_ex_src_dir, paste0(s_ex_src_name, "_ex_src.Rmd"))
   cat(paste0(vec_ex_src, collapse = "\n"), "\n", file = s_ex_src_path)
   # render exercise source to pdf
   s_ex_out_path <- file.path(ps_ex_out_dir, paste(s_ex_src_name, '.pdf', sep = ''))
@@ -253,21 +262,48 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
   }
   # path to solution and render
   s_sol_out_path <- file.path(ps_sol_out_dir, paste(s_ex_src_name, '_sol.pdf', sep = ''))
+  if (fs::file_exists(path = s_sol_out_path)) fs::file_delete(path = s_sol_out_path)
   rmarkdown::render(input = s_uni_src_path, output_file = s_sol_out_path, params = list(doctype = 'solution'))
 
-  # do the rendering of nb
-  if (!dir.exists(ps_nb_src_dir)) dir.create(ps_nb_src_dir)
-  s_nb_src_path <- file.path(ps_nb_src_dir, paste0(s_ex_src_name, "_nb_src.Rmd"))
+  # do the deployment and the rendering of nb
+  s_nb_src_dir <- ps_nb_src_dir
+  if (!dir.exists(s_nb_src_dir)) dir.create(s_nb_src_dir)
+  s_nb_src_path <- file.path(s_nb_src_dir, paste0(s_ex_src_name, "_nb_src.Rmd"))
   cat(paste0(vec_ex_nb, collapse = "\n"), "\n", file = s_nb_src_path)
+  # get includes from vec_ex_nb and deploy them also to s_nb_src_dir
+  vec_nb_includes <- grep_include(pvec_src = vec_ex_nb, ps_grep_pattern = "knitr::include_graphics")
+  for (idx in seq_along(vec_nb_includes)){
+    # copy the odg file instead of the included png
+    s_nb_include <- paste0(tools::file_path_sans_ext(vec_nb_includes[idx]), ".odg")
+    s_new_dir <- file.path(s_nb_src_dir, dirname(s_nb_include))
+    if (!dir.exists(s_new_dir)) dir.create(s_new_dir, recursive = TRUE)
+    fs::file_copy(path = file.path(s_uni_src_dir, s_nb_include), new_path = s_new_dir, overwrite = TRUE)
+  }
+
   # render the nb
   rmarkdown::render(input = s_nb_src_path, output_dir = ps_nb_out_dir)
 
-  # deploy to rexpf
+  # deploy exercise material to rexpf
   if (!is.null(ps_rexpf_trg)){
-    # copy nb source as exercise
-    fs::dir_copy(path = file.path(ps_nb_src_dir), new_path = file.path(s_rexpf_dir, "ex"))
-    # copy ex source as solution
-    fs::dir_copy(path = dirname(s_uni_src_path), new_path = file.path(s_rexpf_dir, "sol"))
+    s_ex_new_path <- file.path(ps_rexpf_trg, 'ex', s_ex_src_name)
+    if (pb_debug)
+      rtt_log_info(plogger = rtt_logger,
+                   ps_caller = 'deploy_src_to_ex_sol',
+                   ps_msg = paste0(" * Deploy ex from source: ", s_nb_src_dir,
+                                   " to rexpf target: ", s_ex_new_path, collapse = ''))
+    # if target ex dir exist, remove it first
+    if (dir.exists(s_ex_new_path)) fs::dir_delete(path = s_ex_new_path)
+    fs::dir_copy(path = s_nb_src_dir, new_path = s_ex_new_path)
+    # deploy solution
+    s_sol_new_path <- file.path(ps_rexpf_trg, 'sol', s_ex_src_name)
+    if (pb_debug)
+        rtt_log_info(plogger = rtt_logger,
+                     ps_caller = 'deploy_src_to_ex_sol',
+                     ps_msg = paste0(" * Deploy sol from source: ", s_uni_src_dir,
+                                     " to rexpf target: ", s_sol_new_path, collapse = ''))
+    # if target solution directory exists, remove it first
+    if (dir.exists(s_sol_new_path)) fs::dir_delete(path = s_sol_new_path)
+    fs::dir_copy(path = s_uni_src_dir, new_path = s_sol_new_path)
 
   }
 
@@ -332,6 +368,31 @@ remove_line <- function(pvec_src, pvec_pattern){
   vec_line_idx <- as.vector(sapply(pvec_pattern, function(x) grep(pattern = x, pvec_src), USE.NAMES = FALSE))
   # set the result
   vec_result <- pvec_src[-vec_line_idx]
+  return(vec_result)
+}
+
+
+#' Grep Rmd Source File For Includes
+#'
+#' In a vector containing a Rmd source file, all files which are included are searched
+#' and returned in a result vector. What is recognised as include is defined in the
+#' search pattern given by the argument \code{ps_grep_pattern}.
+#'
+#' @param pvec_src vector containing Rmd source
+#' @param ps_grep_pattern pattern that matches the lines with include statments
+#' @param pvec_repl_pattern vector of characters that are removed from include statements
+#'
+#' @return vec_result vector with files that are included
+grep_include <- function(pvec_src, ps_grep_pattern, pvec_repl_pattern = c("\\(path = ", "\"", "\\)")){
+  vec_result <- grep(pattern = ps_grep_pattern, pvec_src, fixed = TRUE, value = TRUE)
+  # remove patterns
+  vec_result <- gsub(pattern = ps_grep_pattern, replacement = "", vec_result)
+  # remove remaining patterns
+  for (p in pvec_repl_pattern){
+    vec_result <- gsub(pattern = p, replacement = "", vec_result)
+  }
+
+  # return result
   return(vec_result)
 }
 
