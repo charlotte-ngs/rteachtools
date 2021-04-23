@@ -141,6 +141,16 @@ deploy_ex <- function(ps_ex_path,
 #' @details
 #'
 #' @param ps_uni_src_path path to unified Rmd source file
+#' @param ps_ex_out_dir exercise output directory
+#' @param ps_sol_out_dir solution output directory
+#' @param ps_nb_src_dir notebook source directory
+#' @param ps_nb_out_dir notebook output directory
+#' @param ps_rexpf_trg target for r exercise platform
+#' @param pl_master_solution_tags list of tags for master solution
+#' @param pl_aug_info_tags list of tags for augmented solutions
+#' @param pb_keep_src flag whether to keep source file
+#' @param pb_debug debug flag
+#' @param pobj_rtt_logger logger object
 #'
 #' @examples
 #' \dontrun{
@@ -159,6 +169,7 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
                                  ps_sol_out_dir,
                                  ps_nb_src_dir,
                                  ps_nb_out_dir,
+                                 ps_rexpf_trg     = NULL,
                                  pl_master_solution_tags = list(start = "master-solution-start",
                                                                 end   = "master-solution-end"),
                                  pl_aug_info_tags = list(start="your-solution-start", end = "your-solution-end"),
@@ -250,6 +261,15 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
   cat(paste0(vec_ex_nb, collapse = "\n"), "\n", file = s_nb_src_path)
   # render the nb
   rmarkdown::render(input = s_nb_src_path, output_dir = ps_nb_out_dir)
+
+  # deploy to rexpf
+  if (!is.null(ps_rexpf_trg)){
+    # copy nb source as exercise
+    fs::dir_copy(path = file.path(ps_nb_src_dir), new_path = file.path(s_rexpf_dir, "ex"))
+    # copy ex source as solution
+    fs::dir_copy(path = dirname(s_uni_src_path), new_path = file.path(s_rexpf_dir, "sol"))
+
+  }
 
   # return invisibly
   return(invisible(TRUE))
