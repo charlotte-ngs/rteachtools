@@ -1,0 +1,109 @@
+---
+title: "Getting Started with a new Course"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with a new Course}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Disclaimer
+Before every semester when preparing the infrastructure for a new course or for a new version of an existing course, the same tasks have to be carried out. The outline given below gives a few hints and ideas on how this process could be automatized. In what follows, we start with a description of the manual process that is used so far. The second part contains possible ideas for automatisation.
+
+
+# Assumptions
+The course is assumed to be a course consisting of the following components
+
+* course notes
+* exercises and solutions
+* additional material
+
+The structure of the course should be kept as flexible as possible. Hence, further components such as student projects or homework or term projects should be easily integratable.
+
+
+# Manual Setup Process
+The following steps are taken in the setup process
+
+* Step 1: Start a new RStudio project
+
+```bash
+R -e 'usethis::create_project(path = "/Users/pvr/Data/Projects/Github/charlotte-ngs/asmss2022_gh-root/main/asmss2022", rstudio = TRUE)'
+```
+
+
+* Step 2: Add a description file
+
+```{r, eval=FALSE}
+usethis::use_description(fields = getOption("charlotte.ngs.description"))
+```
+
+This file must be edited and adapted according to the new course. This can be done via
+
+```{r, eval=FALSE}
+usethis::edit_file(path = "DESCRIPTION")
+```
+
+
+* Step 3: Licence is added 
+
+```{r, eval=FALSE}
+usethis::use_cc0_license()
+```
+
+
+* Step 4: README File is added
+
+```{r, eval=FALSE}
+usethis::use_readme_rmd()
+```
+
+The README file is the main page of content, not only for the Github page, but also for the website which will be created via `pkgdown`
+
+
+* Step 5: Git Repository
+
+```{r, eval=FALSE}
+usethis::use_git()
+```
+
+
+* Step 6: Setting up the pages for the website
+
+```{r, eval=FALSE}
+usethis::use_vignette(name = "course_notes", title = "Course Notes")
+usethis::use_vignette(name = "course_exercises", title = "Exercises")
+usethis::use_vignette(name = "course_solutions", title = "Solutions")
+usethis::use_vignette(name = "course_additional_material", title = "Additional Material")
+```
+
+
+* Step 7: Adding a news site
+
+```{r, eval=FALSE}
+usethis::use_news_md()
+```
+
+
+* Step 8: Install package
+
+```{r, eval=FALSE}
+devtools::document();devtools::install()
+```
+
+* Step 9: Build Site
+
+```{r, eval=FALSE}
+pkgdown::build_site()
+```
+
+After committing and pushing all the material, the material should be available.
+
+
+# Automation Steps
