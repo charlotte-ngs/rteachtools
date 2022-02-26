@@ -267,7 +267,7 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
 
   # do the deployment and the rendering of nb
   s_nb_src_dir <- ps_nb_src_dir
-  if (!dir.exists(s_nb_src_dir)) dir.create(s_nb_src_dir)
+  if (!dir.exists(s_nb_src_dir)) dir.create(s_nb_src_dir, recursive = TRUE)
   s_nb_src_path <- file.path(s_nb_src_dir, paste0(s_ex_src_name, "_nb_src.Rmd"))
   cat(paste0(vec_ex_nb, collapse = "\n"), "\n", file = s_nb_src_path)
   # get includes from vec_ex_nb and deploy them also to s_nb_src_dir
