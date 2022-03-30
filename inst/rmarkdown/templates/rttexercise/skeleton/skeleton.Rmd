@@ -16,6 +16,10 @@ params:
     label: 'Document Type'
     value: 'solution'
     choices: ['exercise', 'solution', 'notebook']
+  isonline:
+    label: 'Online (y/n)'
+    value: TRUE
+    choices: [TRUE, FALSE]
 ---
 
 
