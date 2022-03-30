@@ -1,3 +1,7 @@
+# rteachtools 0.0.4
+
+* Added knitr parameter to distinguish between online and offline conversion
+
 # rteachtools 0.0.3
 
 * Resolved issue with missing diagrams in notebook
