@@ -227,12 +227,18 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
                       author = l_yml_fm_uni_src$author,
                       date = l_yml_fm_uni_src$date,
                       output = 'html_notebook',
-                      params = l_yml_fm_uni_src$params$isonline)
+                      params = l_yml_fm_uni_src$params)
   # get yaml boundaries
   vec_yaml_bound <- grep('---', vec_ex_nb, fixed = TRUE)
 
+  # convert yaml header
+  s_asis_yml <- ymlthis::asis_yaml_output(ymlthis::yml(l_yml_fm_nb))
+  s_asis_yml <- gsub(pattern = "```yaml\n", replacement = "", s_asis_yml, fixed = TRUE)
+  s_asis_yml <- gsub(pattern = "```", replacement = "", s_asis_yml, fixed = TRUE)
+
+
   # put together nb source
-  vec_ex_nb <- c(ymlthis::yml(l_yml_fm_nb),
+  vec_ex_nb <- c(s_asis_yml,
                  vec_ex_nb[(vec_yaml_bound[2]+1):length(vec_ex_nb)],
                  paste0("\n\n```{r, echo=FALSE, results='asis'}\ncat('\\n---\\n\\n _Latest Changes: ', format(Sys.time(), '%Y-%m-%d %H:%M:%S'), ' (', Sys.info()['user'], ')_\\n', sep = '')\n```\n", collapse = ""))
 
