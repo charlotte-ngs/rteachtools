@@ -1,0 +1,40 @@
+---
+title: "Useful Tools for Running a Course"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Useful Tools for Running a Course}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Disclaimer
+A set of tools that might be useful when teaching a course are described, designed and developed.
+
+
+
+# Background
+During the semester a large part of the work besides the teaching consists of largely repetitive tasks. That fact provides many oportunities for automation. In what follows some of the tasks are described with the aim of developing an automated version of these tasks.
+
+
+# Tasks
+
+## Excercises
+After teaching a certain amount of material, the students are asked to apply this knowledge. This application is done in an exercise which consists of a set of problems to be solved.
+
+Hence after each lecture, we have to create a new exercise. Excercises consist of two parts. 
+
+1. Set of problems. Each problem is a defined set of tasks to be done
+2. Solutions to the problems. For each problem a description of the solution is given.
+
+
+
+
+
+
