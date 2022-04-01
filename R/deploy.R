@@ -198,10 +198,10 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
   }
   if (pb_debug)
     rtt_log_info(plogger = rtt_logger,
-                 ps_caller = 'deploy_ex',
+                 ps_caller = 'deploy_src_to_ex_sol',
                  ps_msg = paste0(" * Setting source path to: ", s_uni_src_path, collapse = ''))
   if (!file.exists(s_uni_src_path))
-    stop(" *** [deploy_ex] ERROR: CANNOT FIND exercise source path: ", s_uni_src_path)
+    stop(" *** [deploy_src_to_ex_sol] ERROR: CANNOT FIND exercise source path: ", s_uni_src_path)
 
   # define parent directory of uni source path
   s_uni_src_dir <- dirname(s_uni_src_path)
@@ -226,17 +226,13 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
                                    replacement = 'Notebook', l_yml_fm_uni_src$title, fixed = TRUE),
                       author = l_yml_fm_uni_src$author,
                       date = l_yml_fm_uni_src$date,
-                      output = 'html_notebook')
+                      output = 'html_notebook',
+                      params = l_yml_fm_uni_src$params$isonline)
   # get yaml boundaries
   vec_yaml_bound <- grep('---', vec_ex_nb, fixed = TRUE)
 
   # put together nb source
-  vec_ex_nb <- c('---',
-                 paste('title: ', l_yml_fm_nb$title, sep = ''),
-                 paste('author: ', l_yml_fm_nb$author, sep = ''),
-                 paste('date: ', l_yml_fm_nb$date, sep = ''),
-                 paste('output: ', l_yml_fm_nb$output, sep = ''),
-                 '---',
+  vec_ex_nb <- c(ymlthis::yml(l_yml_fm_nb),
                  vec_ex_nb[(vec_yaml_bound[2]+1):length(vec_ex_nb)],
                  paste0("\n\n```{r, echo=FALSE, results='asis'}\ncat('\\n---\\n\\n _Latest Changes: ', format(Sys.time(), '%Y-%m-%d %H:%M:%S'), ' (', Sys.info()['user'], ')_\\n', sep = '')\n```\n", collapse = ""))
 
@@ -267,8 +263,23 @@ deploy_src_to_ex_sol <- function(ps_uni_src_path,
 
   # do the deployment and the rendering of nb
   s_nb_src_dir <- ps_nb_src_dir
-  if (!dir.exists(s_nb_src_dir)) dir.create(s_nb_src_dir, recursive = TRUE)
+  if (pb_debug)
+    rtt_log_info(plogger = rtt_logger,
+                 ps_caller = 'deploy_src_to_ex_sol',
+                 ps_msg = paste0(" * Setting source path for nb to: ", s_nb_src_dir, collapse = ''))
+
+  if (!dir.exists(s_nb_src_dir)) {
+    dir.create(s_nb_src_dir, recursive = TRUE)
+    if (pb_debug)
+      rtt_log_info(plogger = rtt_logger,
+                   ps_caller = 'deploy_src_to_ex_sol',
+                   ps_msg = paste0(" * Created nb src dir: ", s_nb_src_dir, collapse = ''))
+  }
   s_nb_src_path <- file.path(s_nb_src_dir, paste0(s_ex_src_name, "_nb_src.Rmd"))
+  if (pb_debug)
+    rtt_log_info(plogger = rtt_logger,
+                 ps_caller = 'deploy_src_to_ex_sol',
+                 ps_msg = paste0(" * Writing nb content to: ", s_nb_src_path, collapse = ''))
   cat(paste0(vec_ex_nb, collapse = "\n"), "\n", file = s_nb_src_path)
   # get includes from vec_ex_nb and deploy them also to s_nb_src_dir
   vec_nb_includes <- grep_include(pvec_src = vec_ex_nb, ps_grep_pattern = "knitr::include_graphics")
