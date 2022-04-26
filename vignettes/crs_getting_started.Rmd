@@ -28,7 +28,7 @@ The course is assumed to be a course consisting of the following components
 The structure of the course should be kept as flexible as possible. Hence, further components such as student projects or homework or term projects should be easily integratable.
 
 
-# Manual Setup Process
+# Manual Setup Process for asmss2022
 The following steps are taken in the setup process
 
 * Step 1: Start a new RStudio project
@@ -104,6 +104,111 @@ pkgdown::build_site()
 ```
 
 After committing and pushing all the material, the material should be available.
+
+
+# Second Example: pigsciencess2022
+
+```bash
+cd && cd Data/Projects/GitHub/charlotte-ngs
+~/Data/Projects/GitHub/fbzwsqualitasag/qmactools/inst/bash/nrsproj.sh \
+-t ~/Data/Projects/GitHub/fbzwsqualitasag/qmactools/inst/template/rstudio/RStudioTemplate.Rproj \
+-p pigsciencess2022_gh-root/main/pigsciencess2022
+```
+
+* Step 2: Add a description file
+
+```{r, eval=FALSE}
+usethis::use_description()
+```
+
+This file must be edited and adapted according to the new course. This can be done via
+
+```{r, eval=FALSE}
+usethis::edit_file(path = "DESCRIPTION")
+```
+
+
+* Step 3: Licence is added 
+
+```{r, eval=FALSE}
+usethis::use_cc0_license()
+```
+
+
+* Step 4: README File is added
+
+```{r, eval=FALSE}
+usethis::use_readme_rmd()
+```
+
+The README file is the main page of content, not only for the Github page, but also for the website which will be created via `pkgdown`
+
+
+* Step 5: Git Repository
+
+```{r, eval=FALSE}
+usethis::use_git()
+```
+
+
+* Step 6: Setting up the pages for the website
+
+```{r, eval=FALSE}
+usethis::use_vignette(name = "course_notes", title = "Course Notes")
+usethis::use_vignette(name = "course_exercises", title = "Exercises")
+usethis::use_vignette(name = "course_solutions", title = "Solutions")
+usethis::use_vignette(name = "course_additional_material", title = "Additional Material")
+```
+
+
+* Step 7: Adding a news site
+
+```{r, eval=FALSE}
+usethis::use_news_md()
+```
+
+
+* Step 8: Install package
+
+```{r, eval=FALSE}
+devtools::document();devtools::install()
+```
+
+* Step 9: Build Site
+
+```{r, eval=FALSE}
+pkgdown::build_site()
+```
+
+* Step 10: Create Repo on Github
+
+Create the new repo on the Github platform and run locally
+
+```bash
+git remote add origin https://github.com/charlotte-ngs/pigsciencess2022.git
+git branch -M main
+git config user.name "charlotte-ngs"
+git config credential.username "charlotte-ngs"
+git push -u origin main
+```
+
+After committing and pushing all the material, the material should be available.
+
+
+## Template for Course Notes
+
+```{r, eval=FALSE}
+usethis::use_rmarkdown_template(template_name = "Course Notes Bookdown Skeleton Project", 
+                                template_dir = 'cnotesdown',
+                                template_description = 'Course Notes Bookdown Skeleton Project for Charlotte-NGS',
+                                template_create_dir = TRUE)
+```
+
+## Starting Course  Notes
+
+```{r}
+dir.create(path = "cn")
+```
 
 
 # Automation Steps
