@@ -204,11 +204,40 @@ usethis::use_rmarkdown_template(template_name = "Course Notes Bookdown Skeleton 
                                 template_create_dir = TRUE)
 ```
 
+Install package to make template available
+
+```{r, eval=FALSE}
+devtools::document();devtools::install()
+
+```
+
+
 ## Starting Course  Notes
 
-```{r}
-dir.create(path = "cn")
+```{r, eval=FALSE}
+rmarkdown::draft("cn", template = "cnotesdown", package = "rteachtools")
+fs::file_move("cn/cn.Rmd", "cn/index.Rmd")
 ```
+
+Change template settings
+
+
+## Slides
+Create template
+
+```{r, eval=FALSE}
+usethis::use_rmarkdown_template(template_name = "Course Beamer Slide Skeleton Document", 
+                                template_dir = 'cbeamerdown',
+                                template_description = 'Course Beamer Slide Skeleton Document for Charlotte-NGS',
+                                template_create_dir = TRUE)
+```
+
+Start a new slides document
+
+```{r, eval=FALSE}
+rmarkdown::draft("sl/l01_psb_intro", template = "cbeamerdown", package = "rteachtools")
+```
+
 
 
 # Automation Steps
