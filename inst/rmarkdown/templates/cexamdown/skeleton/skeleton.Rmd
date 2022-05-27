@@ -7,13 +7,13 @@ output:
     keep_tex: no
   html_document:
     df_print: paged
-output_file: asmss2022_exam_sol.pdf
+output_file: <ph>OUTPUT_FILE</ph>
 params:
-  seed: 1234
-  name: Name
-  firstname: Firstname
-  leginr: LegiNr
-  examdate: '2022-05-30'
+  seed: <ph>SEED</ph>
+  name: <ph>NAME</ph>
+  firstname: <ph>FIRST_NAME</ph>
+  leginr: <ph>LEGI_NR</ph>
+  examdate: `r format(Sys.Date(), "%Y-%m-%d")`
   alias: test
 --- 
 <!-- %\usepackage{fancyhdr} -->

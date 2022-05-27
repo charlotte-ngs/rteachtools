@@ -249,5 +249,11 @@ usethis::use_rmarkdown_template(template_name = "Exam Questions Skeleton Documen
                                 template_create_dir = TRUE)
 ```
 
+Using the template works with
+
+```{r, eval=FALSE}
+rmarkdown::draft(file = "exam/asm_exam_sol", template = "cexamdown", package = "rteachtools")
+```
+
 
 # Automation Steps
