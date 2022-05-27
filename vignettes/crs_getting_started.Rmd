@@ -239,5 +239,15 @@ rmarkdown::draft("sl/l01_psb_intro", template = "cbeamerdown", package = "rteach
 ```
 
 
+# Template for Exam
+Exams are created in a special Rmarkdown document using latex-features to create a title page.
+
+```{r, eval=FALSE}
+usethis::use_rmarkdown_template(template_name = "Exam Questions Skeleton Document",
+                                template_dir = 'cexamdown',
+                                template_description = 'Exam Template Document for charlotte-ngs',
+                                template_create_dir = TRUE)
+```
+
 
 # Automation Steps
