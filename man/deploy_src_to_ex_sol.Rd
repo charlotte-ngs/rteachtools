@@ -53,9 +53,6 @@ information which is commented out. For the notebook this information will be ac
 The augmented information consists of hints to the students on how to solve the exercise
 problems.
 }
-\details{
-
-}
 \examples{
 \dontrun{
 s_uni_src_path <- system.file("extdata", "asm_ex06.Rmd", package = "rteachtools")
