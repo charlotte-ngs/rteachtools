@@ -1,3 +1,7 @@
+# rteachtools 0.0.5
+
+* Creator function for new slides document
+
 # rteachtools 0.0.4
 
 * Added knitr parameter to distinguish between online and offline conversion
