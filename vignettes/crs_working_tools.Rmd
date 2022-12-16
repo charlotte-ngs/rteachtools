@@ -34,6 +34,10 @@ Hence after each lecture, we have to create a new exercise. Excercises consist o
 2. Solutions to the problems. For each problem a description of the solution is given.
 
 
+## Slides
+Content is presented using slides. A simple creator function should allow to seamlessly start a new slides document. 
+
+
 
 
 

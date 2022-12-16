@@ -1,6 +1,6 @@
 ---
-title: <ph>title</ph>
-author: <ph>author</ph>
+title: {{title}}
+author: {{author}}
 date: "`r Sys.Date()`"
 output: beamer_presentation
 ---
