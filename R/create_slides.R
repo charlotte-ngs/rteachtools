@@ -38,23 +38,25 @@ create_slides <- function(ps_sl_path,
   if (tolower(fs::path_ext(s_sl_path)) != "rmd"){
     s_sl_path <- paste0(fs::path_ext_remove(s_sl_path), ".Rmd")
   }
+  # check whether parent dir of s_sl_path exists
+  s_sl_dir <- dirname(s_sl_path)
+  if (!dir.exists(s_sl_dir)) dir.create(path = s_sl_dir, recursive = TRUE)
   # use rmarkdown draft to get to the template
-  s_sl_tmpl <- paste0(s_sl_path, ".template")
-  rmarkdown::draft(file = s_sl_tmpl,
+  s_sl_name <- fs::path_ext_remove(basename(s_sl_path))
+  # draft from template to tempdir
+  s_sl_tmp_path <- file.path(tempdir(), s_sl_name)
+  rmarkdown::draft(file = s_sl_tmp_path,
                    template = ps_template,
                    package = ps_package,
                    edit = pb_edit)
   # read the template into a vector
-  vec_sl_tmpl <- readLines(s_sl_tmpl)
+  vec_sl_tmpl <- readLines(s_sl_tmp_path)
   # delete template file, as it is not longer needed
-  fs::file_delete(path = s_sl_tmpl)
+  fs::file_delete(path = s_sl_tmp_path)
   # replace placeholders with data in pl_data
   vec_sl_out <- whisker::whisker.render(template = vec_sl_tmpl,
                                         data = pl_data)
 
-  # check whether parent dir of s_sl_path exists
-  s_sl_dir <- dirname(s_sl_path)
-  if (!dir.exists(s_sl_dir)) dir.create(path = s_sl_dir, recursive = TRUE)
   # write content to file
   cat(paste0(vec_sl_out, collapse = "\n"), "\n", file = s_sl_path, append = FALSE)
   return(invisible(TRUE))

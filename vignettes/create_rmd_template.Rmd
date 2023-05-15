@@ -1,0 +1,33 @@
+---
+title: "Create RMarkdown Templates"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Create RMarkdown Templates}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+## Disclaimer
+A description protocol on how new RMarkdown templates can be created is given.
+
+
+## New Template
+According to https://usethis.r-lib.org/reference/use_rmarkdown_template.html a new RMarkdown template can be created by 
+
+``` r 
+usethis::use_rmarkdown_template(template_name = "Charlotte-NGS Exam RMarkdown Template", 
+                                template_dir  = 'crmdexam',
+                                template_description = 'Exam used for all courses hosted by the Charlotte-NGS platform')
+```
+
+The above command creates the directory 'inst/rmarkdown/templates/crmdexam' containing a yaml-file and a subdirectory called 'skeleton'. An empty skeleton RMarkdown file and all other contents are copied into the subdirectory 'skeleton'. 
+
+

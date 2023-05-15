@@ -1,0 +1,436 @@
+---
+output:
+  pdf_document:
+    includes:
+      in_header: tex/preamble.tex
+    fig_caption: false
+    keep_tex: true
+documentclass: article
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(hook_convert_odg = rmdhelp::hook_convert_odg)
+library(dplyr)
+# decide from where data is read
+b_online <- TRUE
+if (b_online){
+  s_data_root <- "{{DATAURL}}"
+} else {
+  s_data_root <- file.path(here::here(), "docs", "data")
+}
+
+```
+
+
+```{r TaskCounts, echo=FALSE}
+cnt <- rmdhelp::R6ClassCount$new()
+cnt$set_prefix(ps_prefix = "## Problem")
+```
+
+```{r PointAssignment, echo=FALSE}
+# Assign Points for Q1
+lPointsQ1 <- list(TaskA = 0,
+                  TaskB = 0,
+                  TaskC = 0,
+                  TaskD = 0)
+nPointQ1Total <- sum(unlist(lPointsQ1))
+# Assign Points for Q2
+lPointsQ2 <- list(TaskA = 0,
+                  TaskB = 0,
+                  TaskC = 0)
+nPointQ2Total <- sum(unlist(lPointsQ2))
+# Assign Points for Q3
+lPointsQ3 <- list(TaskA = 0,
+                  TaskB = 0,
+                  TaskC = 0)
+nPointQ3Total <- sum(unlist(lPointsQ3))
+# Assign Points for Q4
+lPointsQ4 <- list(TaskA = 0,
+                  TaskB = 0,
+                  TaskC = 0)
+nPointQ4Total <- sum(unlist(lPointsQ4))
+# Assign Points for Q5
+lPointsQ5 <- list(TaskA = 0,
+                  TaskB = 0,
+                  TaskC = 0)
+nPointQ5Total <- sum(unlist(lPointsQ5))
+# compute overal sum of points
+nPointOverallTotal <- nPointQ1Total + nPointQ2Total + nPointQ3Total + nPointQ4Total + nPointQ5Total
+```
+
+
+\thispagestyle{empty}
+
+\begin{tabular}{l}
+ETH Zurich \\
+D-USYS\\
+Institute of Agricultural Sciences\\
+\end{tabular}
+
+\vspace{15ex}
+\begin{center}
+\huge
+Solutions To Exam\\ \vspace{1ex}
+Livestock Breeding and Genomics \\  \vspace{1ex}
+FS 2022 \\
+
+\normalsize
+\vspace{7ex}
+Peter von Rohr 
+\end{center}
+
+\vspace{7ex}
+\begin{tabular}{p{5cm}lr}
+  & \textsc{Date}  & \textsc{\emph{23. December 2022}} \\
+  & \textsc{Begin} & \textsc{\emph{09:15 }}\\
+  & \textsc{End}   & \textsc{\emph{11:15 }}\\ 
+\end{tabular}
+
+\vspace{5ex}
+<!-- Table with Name -->
+\large
+\begin{tabular}{p{2.5cm}p{3cm}p{6cm}}
+  &  Name:     &  \\
+  &            &  \\
+  &  Legi-Nr:  & \\
+\end{tabular}
+\normalsize
+
+<!-- Table with Points -->
+
+\vspace{9ex}
+\begin{center}
+\begin{tabular}{|p{3cm}|c|c|}
+\hline
+Problem  &  Maximum Number of Points  &  Number of Points Reached \\
+\hline
+1        &  `r nPointQ1Total`         & \\
+\hline
+2        &  `r nPointQ2Total`         & \\
+\hline
+3        &  `r nPointQ3Total`         & \\
+\hline
+4        &  `r nPointQ4Total`          & \\
+\hline
+5        &  `r nPointQ5Total`          & \\
+\hline
+Total    &  `r nPointOverallTotal`    & \\
+\hline
+\end{tabular}
+\end{center} 
+
+\clearpage
+\pagebreak
+
+
+```{r, echo=FALSE, results='asis'}
+cat(cnt$out(ps_suffix = ""), "\n")
+```
+
+\vspace{3ex}
+
+\vspace{3ex}
+\textit{}
+
+
+\begin{enumerate}
+\item[a)] 
+
+\textit{}
+\points{`r lPointsQ1$TaskA`}
+\end{enumerate}
+
+\solstart
+
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+\begin{enumerate}
+\item[b)] 
+
+\textit{}
+\points{`r lPointsQ1$TaskB`}
+\end{enumerate}
+
+
+\solstart
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+\begin{enumerate}
+\item[c)]  
+
+\textit{}
+\points{`r lPointsQ1$TaskC`}
+\end{enumerate}
+
+
+\solstart
+
+\solend
+ 
+
+\clearpage
+\pagebreak
+
+
+```{r, echo=FALSE, results='asis'}
+cat(cnt$out(ps_suffix = ""), "\n")
+```
+
+\vspace{3ex}
+\textit{}
+
+\vspace{3ex}
+\begin{enumerate}
+\item[a)] 
+
+\textit{}
+\points{`r lPointsQ2$TaskA`}
+\end{enumerate}
+
+
+\vspace{3ex}
+\solstart
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+\begin{enumerate}
+\item[b)] 
+
+\textit{}
+\points{`r lPointsQ2$TaskB`}
+\end{enumerate}
+
+
+\vspace{3ex}
+\solstart
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+\begin{enumerate}
+\item[c)]  
+
+\textit{}
+\points{`r lPointsQ2$TaskC`}
+\end{enumerate}
+
+
+\vspace{3ex}
+\solstart
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+
+```{r, echo=FALSE, results='asis'}
+cat(cnt$out(ps_suffix = ""), "\n")
+```
+
+
+
+\textit{} 
+
+
+\vspace{3ex}
+\begin{enumerate}
+\item[a)] 
+
+\textit{}
+\points{`r lPointsQ3$TaskA`}
+\end{enumerate}
+
+
+\solstart
+
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+\begin{enumerate}
+\item[b)] 
+
+\textit{}
+\points{`r lPointsQ3$TaskB`}
+\end{enumerate}
+
+
+\solstart
+
+
+\solend
+ 
+
+\clearpage
+\pagebreak
+
+
+\vspace{3ex}
+\begin{enumerate}
+\item[c)]  
+
+\textit{}
+\points{`r lPointsQ3$TaskC`}
+\end{enumerate}
+
+
+\solstart
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+```{r, echo=FALSE, results='asis'}
+cat(cnt$out(ps_suffix = ""), "\n")
+```
+
+
+\textit{}
+
+
+\vspace{3ex}
+\begin{enumerate}
+\item[a)]  
+
+\textit{}
+\points{`r lPointsQ4$TaskA`}
+\end{enumerate}
+
+
+\solstart
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+\begin{enumerate}
+\item[b)] 
+
+\textit{}
+\points{`r lPointsQ4$TaskB`}
+\end{enumerate}
+
+
+\solstart
+
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+\begin{enumerate}
+\item[c)]  
+
+\textit{}
+\points{`r lPointsQ4$TaskC`}
+\end{enumerate}
+
+
+\vspace{3ex}
+\solstart
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+
+```{r, echo=FALSE, results='asis'}
+cat(cnt$out(ps_suffix = ""), "\n")
+```
+
+\textit{}
+
+\textit{}
+
+\vspace{3ex}
+
+
+\begin{enumerate}
+\item[a)] 
+
+\textit{}
+\points{`r lPointsQ5$TaskA`}
+\end{enumerate}
+
+
+\solstart
+
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+\begin{enumerate}
+\item[b)] 
+
+\textit{}
+\points{`r lPointsQ5$TaskB`}
+\end{enumerate}
+
+
+\solstart
+
+
+\solend
+
+
+\clearpage
+\pagebreak
+
+
+\begin{enumerate}
+\item[c)]  
+
+\textit{}
+\points{`r lPointsQ5$TaskC`}
+\end{enumerate}
+
+
+\vspace{3ex}
+\solstart
+
+\solend
+ 
