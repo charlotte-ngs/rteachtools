@@ -1,5 +1,6 @@
 ## -- Exam Creation Functionality -----------------------------------------
 #'
+#' TODO: tex-directory from template is not copied
 #'
 #' @title Create New Exam Document
 #'
