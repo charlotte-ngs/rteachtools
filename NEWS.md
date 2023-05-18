@@ -1,3 +1,5 @@
+# rteachtools 0.0.6
+
 # rteachtools 0.0.5
 
 * Creator function for new slides document
