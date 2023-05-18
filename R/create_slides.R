@@ -1,6 +1,6 @@
-
-
-
+## -- Slide Creation Functionality -----------------------------------------
+#'
+#'
 #' Create New Beamer Slides
 #'
 #' @description
