@@ -141,8 +141,6 @@ deploy_ex <- function(ps_ex_path,
 #' The augmented information consists of hints to the students on how to solve the exercise
 #' problems.
 #'
-#' @details
-#'
 #'
 #' @param ps_uni_src_path path to unified Rmd source file
 #' @param ps_ex_out_dir output directory for exercise pdf-file

@@ -19,3 +19,6 @@ create_exam(ps_exam_path, pl_data = NULL, pb_edit = FALSE, pb_force = FALSE)
 A new exam document is created based on a predefined template that comes
 with package \code{rteachtools}.
 }
+\details{
+TODO: tex-directory from template is not copied
+}
