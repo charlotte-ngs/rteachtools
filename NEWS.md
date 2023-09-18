@@ -1,3 +1,5 @@
+# rteachtools 0.0.7
+
 # rteachtools 0.0.6
 
 * Creator function for new exam documents

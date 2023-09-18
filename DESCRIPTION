@@ -1,6 +1,6 @@
 Package: rteachtools
 Title: Tools For Teaching
-Version: 0.0.6
+Version: 0.0.7
 Authors@R: 
     person(given = "Peter",
            family = "von Rohr",
