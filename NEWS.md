@@ -1,5 +1,7 @@
 # rteachtools 0.0.7
 
+* Further development of automation strategies
+
 # rteachtools 0.0.6
 
 * Creator function for new exam documents
