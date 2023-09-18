@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 # Disclaimer
-Before every semester when preparing the infrastructure for a new course or for a new version of an existing course, the same tasks have to be carried out. The outline given below gives a few hints and ideas on how this process could be automatized. In what follows, we start with a description of the manual process that is used so far. The second part contains possible ideas for automatisation.
+Before every semester when preparing the infrastructure for a new course or for a new version of an existing course, the same tasks have to be carried out. The outline given below gives a few hints and ideas on how this process could be automated. In what follows, we start with a description of the manual process that is used so far. The second part contains possible ideas for automation.
 
 
 # Assumptions
@@ -25,7 +25,7 @@ The course is assumed to be a course consisting of the following components
 * exercises and solutions
 * additional material
 
-The structure of the course should be kept as flexible as possible. Hence, further components such as student projects or homework or term projects should be easily integratable.
+The structure of the course should be kept as flexible as possible. Hence, further components such as student projects or homework or term projects should be easily integrable.
 
 
 # Manual Setup Process for asmss2022
