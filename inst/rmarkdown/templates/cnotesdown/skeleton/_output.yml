@@ -10,7 +10,7 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./"><ph>book_title</ph></a></li>
+        <li><a href="./">{{book_title}}</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: <ph>edit_url</ph>
+    edit: {{edit_url}}

@@ -1,4 +1,4 @@
-book_filename: <ph>book_filename</ph>
+book_filename: {{book_filename}}
 language:
   ui:
     chapter_name: "Chapter "
