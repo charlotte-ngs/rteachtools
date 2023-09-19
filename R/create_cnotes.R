@@ -59,8 +59,9 @@ create_cnotes <- function(ps_cn_dir,
       if (pb_debug)
         rtt_log_error(plogger = rtt_logger,
                       ps_caller = "create_cnotes",
-                      ps_msg    = " *** Error cn path already exists. Either remove existing path or set option pb_force = TRUE")
-      stop(" *** Error cn path already exists. Either remove existing path or set option pb_force = TRUE")
+                      ps_msg    = paste0(" *** ERROR: FOUND cn dir: ", s_cn_dir,
+                                         ". Either remove existing path or set option pb_force = TRUE", collapse = ""))
+      stop(" *** Error cn path already exists. Either remove existing path or set option pb_force = TRUE: ", s_cn_dir)
     }
   }
   # create s_cn_dir
