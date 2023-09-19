@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE
 )
 ```
 
@@ -22,7 +23,8 @@ Before every semester when preparing the infrastructure for a new course or for 
 The course is assumed to be a course consisting of the following components
 
 * course notes
-* exercises and solutions
+* exercises 
+* solutions to exercises
 * additional material
 
 The structure of the course should be kept as flexible as possible. Hence, further components such as student projects or homework or term projects should be easily integrable.
@@ -256,4 +258,92 @@ rmarkdown::draft(file = "exam/asm_exam_sol", template = "cexamdown", package = "
 ```
 
 
-# Automation Steps
+# Automation Strategies
+The above shown manual steps should be integrated into an automation strategy. A new RStudio project can be created using the script `qrspm`. Then a function within `rteachtools` can be called which then steps through all other steps. 
+
+```bash
+cd;qrspm create Data/Projects/Github/charlotte-ngs/lbgfs2023_gh-root/main/lbgfs2023
+```
+
+The further steps are the executed from the RStudio console
+
+Step 1: Licence is added 
+
+```{r}
+usethis::use_cc0_license()
+```
+
+Step 2: Website Pages
+
+```{r, eval=FALSE}
+usethis::use_vignette(name = "course_notes", title = "Course Notes")
+usethis::use_vignette(name = "course_exercises", title = "Exercises")
+usethis::use_vignette(name = "course_solutions", title = "Solutions")
+usethis::use_vignette(name = "course_additional_material", title = "Additional Material")
+```
+
+Step 3: Initial Commit
+
+```{r}
+gert::git_add(".")
+gert::git_commit("First commit of initial material")
+```
+
+Step 4: Install Package
+
+```{r}
+devtools::document();devtools::install()
+```
+
+
+Step 5: Adapt pkg yaml
+
+```{r}
+usethis::use_pkgdown()
+# then manually adapt to version of previous year
+```
+
+
+Step 6: Build Site
+
+Test build with 
+
+```{r}
+pkgdown::build_site()
+```
+
+
+Step 7: Github Repository
+
+* go to `github.com` 
+* login as `charlotte-ngs`
+* create new repository `lbgfs2023`
+* run the commands to add remote repository and to push to the remote repo
+
+```bash
+git remote add origin https://github.com/charlotte-ngs/lbgfs2023.git
+git branch -M main
+git push -u origin main
+```
+
+We are going to use the following command which activates github-pages with an automatic build after pushing to the remote repository. The required configuration is added in subdirectory `.github`.
+
+```{r}
+usethis::use_pkgdown_github_pages()
+```
+
+
+## Course Notes
+Using the available templates for course notes, we get
+
+```{r}
+rmarkdown::draft("cn", template = "cnotesdown", package = "rteachtools", edit = FALSE)
+```
+
+The place holders have to be replaced
+
+
+
+
+
+

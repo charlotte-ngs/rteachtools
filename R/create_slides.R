@@ -11,7 +11,7 @@
 #'
 #' @details
 #' The rmarkdown document is created using the function \code{rmarkdown::draft()}.
-#' Then some placeholders are replaced using the function \code{whisker::whisker.render()}.
+#' Then some place holders are replaced using the function \code{whisker::whisker.render()}.
 #'
 #'
 #' @param ps_sl_path path of the new rmarkdown document
@@ -30,8 +30,8 @@
 #' }
 create_slides <- function(ps_sl_path,
                           ps_template = "cbeamerdown",
-                          ps_package = "rteachtools",
-                          pb_edit = FALSE,
+                          ps_package  = "rteachtools",
+                          pb_edit     = FALSE,
                           pl_data){
   s_sl_path <- ps_sl_path
   # add .Rmd, if it is not already done

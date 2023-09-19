@@ -31,7 +31,7 @@ template of package 'rteachtools'.
 }
 \details{
 The rmarkdown document is created using the function \code{rmarkdown::draft()}.
-Then some placeholders are replaced using the function \code{whisker::whisker.render()}.
+Then some place holders are replaced using the function \code{whisker::whisker.render()}.
 }
 \examples{
 \dontrun{
