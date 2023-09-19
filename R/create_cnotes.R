@@ -14,7 +14,6 @@
 #' @param ps_cn_dir course notes directory
 #' @param ps_template template for course notes
 #' @param ps_package package containing course notes template
-#' @param pb_edit edit created course notes index file
 #' @param pl_repl_data list with replacement data
 #' @param pb_force force to create course notes directory, if it already exists
 #' @param pb_debug run function in debug mode and write debug info to logfile
@@ -24,7 +23,6 @@
 create_cnotes <- function(ps_cn_dir,
                           ps_template = "cnotesdown",
                           ps_package  = "rteachtools",
-                          pb_edit     = FALSE,
                           pl_repl_data,
                           pb_force        = FALSE,
                           pb_debug        = FALSE,
@@ -56,7 +54,7 @@ create_cnotes <- function(ps_cn_dir,
       if (pb_debug)
         rtt_log_info(plogger   = rtt_logger,
                      ps_caller = "create_cnotes",
-                     ps_msg    = paste0(" * Removed existing cn path: ", s_cn_dir))
+                     ps_msg    = paste0(" * Removed existing cn dir: ", s_cn_dir))
     } else {
       if (pb_debug)
         rtt_log_error(plogger = rtt_logger,
@@ -65,6 +63,12 @@ create_cnotes <- function(ps_cn_dir,
       stop(" *** Error cn path already exists. Either remove existing path or set option pb_force = TRUE")
     }
   }
+  # create s_cn_dir
+  fs::dir_create(path = s_cn_dir, recurse = TRUE)
+  if (pb_debug)
+    rtt_log_info(plogger   = rtt_logger,
+                 ps_caller = "create_cnotes",
+                 ps_msg    = paste0(" * Created cn dir: ", s_cn_dir))
   # get the basename directory of the course notes path
   s_cn_bn <- basename(s_cn_dir)
   # draft the template into a temp dir
@@ -78,9 +82,33 @@ create_cnotes <- function(ps_cn_dir,
                  ps_caller = "create_cnotes",
                  ps_msg    = paste0(" * Drafted cn into: ", s_cn_tmp_dir))
 
+  # replacement over all template files
+  vec_tmpl_path <- list.files(s_cn_tmp_dir, full.names = T)
+  for (cur_tmpl in vec_tmpl_path){
+    if (pb_debug)
+      rtt_log_info(plogger   = rtt_logger,
+                   ps_caller = "create_cnotes",
+                   ps_msg    = paste0(" * Current template: ", cur_tmpl))
+    cur_con <- file(cur_tmpl)
+    vec_cur_tmpl_cont <- readLines(cur_con)
+    close(cur_con)
+    # replacement results
+    vec_cn_out <- whisker::whisker.render(template = vec_cur_tmpl_cont,
+                                          data = pl_repl_data)
+    # write results
+    s_cur_tmpl_file <- basename(cur_tmpl)
+    if (s_cur_tmpl_file == paste0(s_cn_bn, ".Rmd")){
+      s_cur_tmpl_file <- "index.Rmd"
+    }
+    s_cur_result_path <- file.path(s_cn_dir, s_cur_tmpl_file)
+    if (pb_debug)
+      rtt_log_info(plogger   = rtt_logger,
+                   ps_caller = "create_cnotes",
+                   ps_msg    = paste0(" * Writing results to: ", s_cur_result_path))
+    cat(paste0(vec_cn_out, collapse = "\n"), "\n", file = s_cur_result_path, append = FALSE)
 
-
-
+  }
+  return(invisible(TRUE))
 
 }
 
