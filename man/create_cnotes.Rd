@@ -8,7 +8,6 @@ create_cnotes(
   ps_cn_dir,
   ps_template = "cnotesdown",
   ps_package = "rteachtools",
-  pb_edit = FALSE,
   pl_repl_data,
   pb_force = FALSE,
   pb_debug = FALSE,
@@ -21,8 +20,6 @@ create_cnotes(
 \item{ps_template}{template for course notes}
 
 \item{ps_package}{package containing course notes template}
-
-\item{pb_edit}{edit created course notes index file}
 
 \item{pl_repl_data}{list with replacement data}
 

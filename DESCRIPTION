@@ -24,4 +24,5 @@ VignetteBuilder: knitr
 Imports: 
     bookdown,
     rmarkdown,
+    wisker,
     ymlthis

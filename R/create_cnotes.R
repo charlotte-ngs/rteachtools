@@ -108,6 +108,9 @@ create_cnotes <- function(ps_cn_dir,
     cat(paste0(vec_cn_out, collapse = "\n"), "\n", file = s_cur_result_path, append = FALSE)
 
   }
+  # cleanup temporary dir
+  if (!pb_debug) fs::dir_delete(s_cn_tmp_dir)
+  # return invisible to mimique a procedure
   return(invisible(TRUE))
 
 }
