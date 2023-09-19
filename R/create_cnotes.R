@@ -19,6 +19,21 @@
 #' @param pb_debug run function in debug mode and write debug info to logfile
 #' @param pobj_rtt_logger logger object to write loginfo to
 #'
+#' @examples
+#' \dontrun{
+#' # example code
+#' l_repl_data = list(title = "Livestock Breeding and Genomics",
+#' author = "Peter von Rohr",
+#' date = format(Sys.Date(), "%Y-%m-%d"),
+#' url = "https://charlotte-ngs.github.io/lbgfs2023",
+#' github_repo = "https://github.com/charlotte-ngs/lbgfs2023",
+#' book_filename = "lbgfs2023-cn",
+#' book_title = "Lifestock Breeding and Genomics FS 2023",
+#' edit_url = "https://github.com/charlotte-ngs/lbgfs2023/edit/main/%s")
+#' rteachtools::create_cnotes(ps_cn_dir = "cn_rtt",
+#'                            pl_repl_data = l_repl_data)
+#' }
+#'
 #' @export create_cnotes
 create_cnotes <- function(ps_cn_dir,
                           ps_template = "cnotesdown",
