@@ -340,7 +340,10 @@ Using the available templates for course notes, we get
 rmarkdown::draft("cn", template = "cnotesdown", package = "rteachtools", edit = FALSE)
 ```
 
-The place holders have to be replaced
+The place holders have to be replaced. This works with the function `whisker::whisker.render()`. This is implemented in the function `create_cnotes()`. 
+
+The empty bibliography file has to be deleted from the templates. This file is created when first building the course notes.
+
 
 
 
