@@ -345,6 +345,25 @@ The place holders have to be replaced. This works with the function `whisker::wh
 The empty bibliography file has to be deleted from the templates. This file is created when first building the course notes.
 
 
+## Rexercise Platform
+Preparation of rexpf
+
+```bash
+cd ../..
+mkdir -p rexpf
+cd rexpf/
+git clone https://github.com/charlotte-ngs/lbgfs2023.git
+cd lbgfs2023/
+git branch rexpf
+git checkout rexpf
+rm -rf .github/ DESCRIPTION LICENSE.md NAMESPACE NEWS.md README.* _pkgdown.yml cn docs/ vignettes/
+mv lbgfs2023.Rproj lbgfs2023.Rproj.org
+cat lbgfs2023.Rproj.org | grep -v BuildType | grep -v WebsitePath > lbgfs2023.Rproj
+rm lbgfs2023.Rproj.org 
+git add .
+git commit -m"Removed un-needed material in rexpf"
+git push origin rexpf
+```
 
 
 
