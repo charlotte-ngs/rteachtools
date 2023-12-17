@@ -1,3 +1,7 @@
+# rteachtools 0.0.8
+
+* Exam template cexamdown
+
 # rteachtools 0.0.7
 
 * Further development of automation strategies

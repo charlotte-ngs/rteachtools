@@ -1,6 +1,6 @@
 Package: rteachtools
 Title: Tools For Teaching
-Version: 0.0.7
+Version: 0.0.8
 Authors@R: 
     person(given = "Peter",
            family = "von Rohr",
@@ -23,6 +23,8 @@ Suggests:
 VignetteBuilder: knitr
 Imports: 
     bookdown,
+    fs,
+    readxl,
     rmarkdown,
     whisker,
     ymlthis
