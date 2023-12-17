@@ -113,9 +113,9 @@ nPointOverallTotal <- nPointQ1Total + nPointQ2Total + nPointQ3Total + nPointQ4To
 		\vspace*{0.2cm}
 		 751-7602-00 V \\
      Solutions for Exam in    \\
-     Applied Statistical Methods \\
-     in Animal Sciences \\
-     Summer Semester 2022
+     <ph>LECTURE_NAME1</ph> \\
+     <ph>LECTURE_NAME2</ph> \\
+     <ph>SEMESTER</ph> <ph>YEAR</ph>
 
 		\vspace*{0.7cm} % Space between the end of the title and the bottom of the grey box
 	}

@@ -73,7 +73,7 @@ Institute of Agricultural Sciences\\
 \huge
 Solutions To Exam\\ \vspace{1ex}
 Livestock Breeding and Genomics \\  \vspace{1ex}
-FS 2022 \\
+{{Semester}} {{Year}} \\
 
 \normalsize
 \vspace{7ex}
