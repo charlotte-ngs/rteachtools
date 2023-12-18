@@ -1,0 +1,38 @@
+---
+title: "create_exam"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{create_exam}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(rteachtools)
+```
+
+An skeleton exam document should be created with the command
+
+```{r}
+create_exam(ps_exam_path = "exam/20231222_sol_exam/20231222_sol_exam.Rmd", 
+            pl_data = list(OUTPUT_FILE = "20231222_sol_exam.pdf", 
+                           SEED = 2023, 
+                           NAME = "Student", 
+                           FIRST_NAME = "Test", 
+                           LEGI_NR="23-987-123", 
+                           LECTURE_NAME1 = "Livestock Breeding", 
+                           LECTURE_NAME2 = "and Genomics", 
+                           SEMESTER = "Fall Semester", 
+                           YEAR = 2023))
+```
+
+So far, directory `tex` in template directory is not copied and the placeholders are not replaced.
+
